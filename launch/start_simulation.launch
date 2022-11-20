@@ -1,0 +1,7 @@
+<launch>
+   <node name="FSM" pkg="assignment_1" type="FSM.py" launch-prefix="lxterminal -e"  output="screen" />
+    
+   <node name="controller" pkg="assignment_1" type="controller.py"/>
+   <node name="planner" pkg="assignment_1" type="planner.py" />
+   <node name="robot_state" pkg="assignment_1" type="robot_state.py" />
+</launch>
