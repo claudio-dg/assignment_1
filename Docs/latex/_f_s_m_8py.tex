@@ -1,0 +1,59 @@
+\hypertarget{_f_s_m_8py}{}\doxysection{scripts/\+F\+SM.py File Reference}
+\label{_f_s_m_8py}\index{scripts/FSM.py@{scripts/FSM.py}}
+
+
+Implement the Finite States Machine of robot\textquotesingle{}s behaviour.  
+
+
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{class_f_s_m_1_1_load_ontology}{F\+S\+M.\+Load\+Ontology}}
+\begin{DoxyCompactList}\small\item\em Init State \textquotesingle{}\mbox{\hyperlink{class_f_s_m_1_1_load_ontology}{Load\+Ontology}}\textquotesingle{} in which the robot loads the map of the enviroment ... \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{class_f_s_m_1_1_decide}{F\+S\+M.\+Decide}}
+\begin{DoxyCompactList}\small\item\em State \textquotesingle{}\mbox{\hyperlink{class_f_s_m_1_1_decide}{Decide}}\textquotesingle{} in which the robot decides which will be the next move ... \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{class_f_s_m_1_1_surveillance}{F\+S\+M.\+Surveillance}}
+\begin{DoxyCompactList}\small\item\em State \textquotesingle{}\mbox{\hyperlink{class_f_s_m_1_1_surveillance}{Surveillance}}\textquotesingle{} in which the robot moves to a location and surveys it ... \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{class_f_s_m_1_1_recharging}{F\+S\+M.\+Recharging}}
+\begin{DoxyCompactList}\small\item\em State \textquotesingle{}\mbox{\hyperlink{class_f_s_m_1_1_recharging}{Recharging}}\textquotesingle{} in which the robot moves to \mbox{\hyperlink{class_f_s_m_1_1_recharging}{Recharging}} Station and waits for the battery to be fully charged ... \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \mbox{\hyperlink{_f_s_m_8py_acc99b577ee61be1b7cc0e2baae140224}{F\+S\+M.\+main}} ()
+\begin{DoxyCompactList}\small\item\em Main program entry, initialises the node, the robot position calling a function of the helper, and the Finite States Machine using S\+M\+A\+CH libraries. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Implement the Finite States Machine of robot\textquotesingle{}s behaviour. 
+
+\begin{DoxyAuthor}{Author}
+Claudio Del Gaizo 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+0.\+1 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+20/11/2022
+\end{DoxyDate}
+Subscribes to\+: ~\newline
+ \mbox{[}None\mbox{]}
+
+Publishes to\+: ~\newline
+ \mbox{[}None\mbox{]}
+
+Description\+:
+
+This node manages the overall behaviour of the robot by implementing a Finite States Machine\+: it is made of 4 different states (Load\+Ontology, Decide, Surveillance, Recharging), that are reached through 5 different transitions (\textquotesingle{}loaded\textquotesingle{},\textquotesingle{}decided\textquotesingle{},\textquotesingle{}visited\textquotesingle{},\textquotesingle{}low\+\_\+battery\textquotesingle{},\textquotesingle{}recharged\textquotesingle{}) and within which it makes us of the functions defined in the Helper class contained in \textquotesingle{}\mbox{\hyperlink{helper_8py}{helper.\+py}}\textquotesingle{} script. 
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{_f_s_m_8py_acc99b577ee61be1b7cc0e2baae140224}\label{_f_s_m_8py_acc99b577ee61be1b7cc0e2baae140224}} 
+\index{FSM.py@{FSM.py}!main@{main}}
+\index{main@{main}!FSM.py@{FSM.py}}
+\doxysubsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily def F\+S\+M.\+main (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Main program entry, initialises the node, the robot position calling a function of the helper, and the Finite States Machine using S\+M\+A\+CH libraries. 
+
+In the end launches rospy.\+spin() 

@@ -1,0 +1,104 @@
+\hypertarget{class_f_s_m_1_1_decide}{}\doxysection{F\+S\+M.\+Decide Class Reference}
+\label{class_f_s_m_1_1_decide}\index{FSM.Decide@{FSM.Decide}}
+
+
+State \textquotesingle{}\mbox{\hyperlink{class_f_s_m_1_1_decide}{Decide}}\textquotesingle{} in which the robot decides which will be the next move ...  
+
+
+
+
+Inheritance diagram for F\+S\+M.\+Decide\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=154pt]{class_f_s_m_1_1_decide__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for F\+S\+M.\+Decide\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=154pt]{class_f_s_m_1_1_decide__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \mbox{\hyperlink{class_f_s_m_1_1_decide_a5bc8c0ff6427df560dc8a08d22231cf0}{\+\_\+\+\_\+init\+\_\+\+\_\+}} (self, my\+\_\+helper)
+\begin{DoxyCompactList}\small\item\em called on initialisation ... \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{class_f_s_m_1_1_decide_aa1d5690b1256fc46d35620f5b3ea2e2e}{execute}} (self, userdata)
+\begin{DoxyCompactList}\small\item\em called on execution, chooses next move calling \textquotesingle{}\+\_\+helper.\+Choose\+Next\+Move()\textquotesingle{}\textquotesingle{} and plans a path to reach such goal calling \textquotesingle{}\+\_\+helper.\+Plan\+To\+Next()\textquotesingle{}, then returns \textquotesingle{}low\+\_\+battery\textquotesingle{} transition if battery gets low during this phase, otherwise returns \textquotesingle{}decided\textquotesingle{} transition to move to \mbox{\hyperlink{class_f_s_m_1_1_surveillance}{Surveillance}} state ... \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_f_s_m_1_1_decide_a4e61da84e8c6ba8bb2b185efa3bb7cda}\label{class_f_s_m_1_1_decide_a4e61da84e8c6ba8bb2b185efa3bb7cda}} 
+{\bfseries check\+\_\+battery}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+State \textquotesingle{}\mbox{\hyperlink{class_f_s_m_1_1_decide}{Decide}}\textquotesingle{} in which the robot decides which will be the next move ... 
+
+\hypertarget{class_f_s_m_1_1_decide_autotoc_md2}{}\doxysubsubsection{Attributes}\label{class_f_s_m_1_1_decide_autotoc_md2}
+{\bfseries{helper}} \+: Helper
+
+an object of class Helper contained in \mbox{\hyperlink{helper_8py}{helper.\+py}} to use its functions
+
+{\bfseries{check\+\_\+battery}} \+: boolean
+
+flag to state wether to check the battery state or not (1=yes 0=NO)\hypertarget{class_f_s_m_1_1_decide_autotoc_md3}{}\doxysubsubsection{Methods}\label{class_f_s_m_1_1_decide_autotoc_md3}
+{\bfseries{init}}(self)\+:
+
+initialise class
+
+{\bfseries{execute}}(self, userdata)\+:
+
+called on execution, chooses next move calling helpers\textquotesingle{}function and plans a path to reach such goal, then returns \textquotesingle{}low\+\_\+battery\textquotesingle{} transition if battery gets low during this phase, otherwise returns \textquotesingle{}decided\textquotesingle{} transition to move to \mbox{\hyperlink{class_f_s_m_1_1_surveillance}{Surveillance}} state
+
+define state \mbox{\hyperlink{class_f_s_m_1_1_decide}{Decide}} 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_f_s_m_1_1_decide_a5bc8c0ff6427df560dc8a08d22231cf0}\label{class_f_s_m_1_1_decide_a5bc8c0ff6427df560dc8a08d22231cf0}} 
+\index{FSM.Decide@{FSM.Decide}!\_\_init\_\_@{\_\_init\_\_}}
+\index{\_\_init\_\_@{\_\_init\_\_}!FSM.Decide@{FSM.Decide}}
+\doxysubsubsection{\texorpdfstring{\_\_init\_\_()}{\_\_init\_\_()}}
+{\footnotesize\ttfamily def F\+S\+M.\+Decide.\+\_\+\+\_\+init\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{my\+\_\+helper }\end{DoxyParamCaption})}
+
+
+
+called on initialisation ... 
+
+\hypertarget{class_f_s_m_1_1_decide_autotoc_md10}{}\doxysubsubsection{Parameters}\label{class_f_s_m_1_1_decide_autotoc_md10}
+{\bfseries{helper}} \+: Helper
+
+an object of class Helper contained in \mbox{\hyperlink{helper_8py}{helper.\+py}} to use its functions
+
+{\bfseries{check\+\_\+battery}} \+: boolean
+
+flag to state wether to check the battery state or not (1=yes 0=NO) 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_f_s_m_1_1_decide_aa1d5690b1256fc46d35620f5b3ea2e2e}\label{class_f_s_m_1_1_decide_aa1d5690b1256fc46d35620f5b3ea2e2e}} 
+\index{FSM.Decide@{FSM.Decide}!execute@{execute}}
+\index{execute@{execute}!FSM.Decide@{FSM.Decide}}
+\doxysubsubsection{\texorpdfstring{execute()}{execute()}}
+{\footnotesize\ttfamily def F\+S\+M.\+Decide.\+execute (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{userdata }\end{DoxyParamCaption})}
+
+
+
+called on execution, chooses next move calling \textquotesingle{}\+\_\+helper.\+Choose\+Next\+Move()\textquotesingle{}\textquotesingle{} and plans a path to reach such goal calling \textquotesingle{}\+\_\+helper.\+Plan\+To\+Next()\textquotesingle{}, then returns \textquotesingle{}low\+\_\+battery\textquotesingle{} transition if battery gets low during this phase, otherwise returns \textquotesingle{}decided\textquotesingle{} transition to move to \mbox{\hyperlink{class_f_s_m_1_1_surveillance}{Surveillance}} state ... 
+
+\hypertarget{class_f_s_m_1_1_decide_autotoc_md11}{}\doxysubsubsection{Parameters}\label{class_f_s_m_1_1_decide_autotoc_md11}
+{\bfseries{chosen\+\_\+location}} \+: str
+
+location decided by \textquotesingle{}\mbox{\hyperlink{class_f_s_m_1_1_decide}{Decide}}\textquotesingle{} state
+
+{\bfseries{path\+\_\+planned}} \+: Plan\+Goal
+
+path plan computed by \textquotesingle{}\mbox{\hyperlink{class_f_s_m_1_1_decide}{Decide}}\textquotesingle{} state 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+scripts/\mbox{\hyperlink{_f_s_m_8py}{F\+S\+M.\+py}}\end{DoxyCompactItemize}

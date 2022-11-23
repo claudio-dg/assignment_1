@@ -1,0 +1,53 @@
+\hypertarget{helper_8py}{}\doxysection{scripts/helper.py File Reference}
+\label{helper_8py}\index{scripts/helper.py@{scripts/helper.py}}
+
+
+Implement helper classes for actions and for interfacing Armor.  
+
+
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classhelper_1_1_action_client_helper}{helper.\+Action\+Client\+Helper}}
+\begin{DoxyCompactList}\small\item\em A class to simplify the implementation of a client for R\+OS action servers. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classhelper_1_1_helper}{helper.\+Helper}}
+\begin{DoxyCompactList}\small\item\em A class to decouple the implementation of the Finite State Machine to the stimulus that might lead to state transitions. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{helper_8py_a58b023630e305bc2091b4a6a767e3271}\label{helper_8py_a58b023630e305bc2091b4a6a767e3271}} 
+string {\bfseries helper.\+L\+O\+G\+\_\+\+T\+AG} = \textquotesingle{}H\+E\+L\+P\+ER\textquotesingle{}
+\item 
+\mbox{\Hypertarget{helper_8py_a565b29f546ba37ee6347438ef544b20f}\label{helper_8py_a565b29f546ba37ee6347438ef544b20f}} 
+{\bfseries helper.\+client} = Armor\+Client(\char`\"{}test2\char`\"{},\char`\"{}ontology2\char`\"{})
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Implement helper classes for actions and for interfacing Armor. 
+
+\begin{DoxyAuthor}{Author}
+Claudio Del Gaizo 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+0.\+1 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+20/11/2022
+\end{DoxyDate}
+Subscribes to\+: ~\newline
+
+
+/state/battery\+\_\+low \+: to retrieve battery state
+
+Publishes to\+: ~\newline
+ \mbox{[}None\mbox{]}
+
+Service C\+Lient to \+: ~\newline
+
+
+armor\+\_\+interface\+\_\+srv \+: to interact with ontology through A\+R\+M\+OR api
+
+Description\+:
+
+This node is the core of the project and contains all the main function used by the actions and the Finite State machine in order to reach the desired behaviour of the robot. Therefore the functions of these classes are called in the other scripts for instance to allow loading the ontology, as well as applying manipulations or querys to it. 

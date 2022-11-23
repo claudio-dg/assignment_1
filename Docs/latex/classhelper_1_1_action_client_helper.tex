@@ -1,0 +1,98 @@
+\hypertarget{classhelper_1_1_action_client_helper}{}\doxysection{helper.\+Action\+Client\+Helper Class Reference}
+\label{classhelper_1_1_action_client_helper}\index{helper.ActionClientHelper@{helper.ActionClientHelper}}
+
+
+A class to simplify the implementation of a client for R\+OS action servers.  
+
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \mbox{\hyperlink{classhelper_1_1_action_client_helper_a9a9ebc43a5fefd2f60ce81e031b6e8cf}{\+\_\+\+\_\+init\+\_\+\+\_\+}} (self, service\+\_\+name, action\+\_\+type, done\+\_\+callback=None, feedback\+\_\+callback=None, mutex=None)
+\begin{DoxyCompactList}\small\item\em Class constructor, i.\+e., class initializer. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{classhelper_1_1_action_client_helper_a3ef1d0aa8ccb9cc4953b195161fc6042}{send\+\_\+goal}} (self, goal)
+\begin{DoxyCompactList}\small\item\em Start the action server with a new {\ttfamily goal}. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classhelper_1_1_action_client_helper_ab21f7715519067f6afc749b1301cfc4f}\label{classhelper_1_1_action_client_helper_ab21f7715519067f6afc749b1301cfc4f}} 
+def \mbox{\hyperlink{classhelper_1_1_action_client_helper_ab21f7715519067f6afc749b1301cfc4f}{cancel\+\_\+goals}} (self)
+\begin{DoxyCompactList}\small\item\em Stop the computation of the action server. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classhelper_1_1_action_client_helper_a274e7f60ebb14a959483cb537d1e02eb}\label{classhelper_1_1_action_client_helper_a274e7f60ebb14a959483cb537d1e02eb}} 
+def \mbox{\hyperlink{classhelper_1_1_action_client_helper_a274e7f60ebb14a959483cb537d1e02eb}{reset\+\_\+client\+\_\+states}} (self)
+\begin{DoxyCompactList}\small\item\em Reset the client state variables stored in this class. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{classhelper_1_1_action_client_helper_af97b6d760c5c182589700634da02c87d}{is\+\_\+done}} (self)
+\begin{DoxyCompactList}\small\item\em Get {\ttfamily True} if the action server finished is computation, or {\ttfamily False} otherwise. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{classhelper_1_1_action_client_helper_ad89e3d1883da188dff42984f4b68ee70}{is\+\_\+running}} (self)
+\begin{DoxyCompactList}\small\item\em Get {\ttfamily True} if the action server is running, or {\ttfamily False} otherwise. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classhelper_1_1_action_client_helper_ad3d1dcef5fee2816729f8b51bee577ba}\label{classhelper_1_1_action_client_helper_ad3d1dcef5fee2816729f8b51bee577ba}} 
+def \mbox{\hyperlink{classhelper_1_1_action_client_helper_ad3d1dcef5fee2816729f8b51bee577ba}{get\+\_\+results}} (self)
+\begin{DoxyCompactList}\small\item\em Get the results of the action server, if any, or {\ttfamily None}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A class to simplify the implementation of a client for R\+OS action servers. 
+
+It is used by the {\ttfamily Interface\+Helper} class. C\+R\+E\+D\+I\+TS for this class to \href{https://github.com/buoncubi/arch_skeleton/wiki/Noetic-Py3-Solution}{\texttt{ https\+://github.\+com/buoncubi/arch\+\_\+skeleton/wiki/\+Noetic-\/\+Py3-\/\+Solution}} whose code has been reused here to simplify the implementation of a client. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classhelper_1_1_action_client_helper_a9a9ebc43a5fefd2f60ce81e031b6e8cf}\label{classhelper_1_1_action_client_helper_a9a9ebc43a5fefd2f60ce81e031b6e8cf}} 
+\index{helper.ActionClientHelper@{helper.ActionClientHelper}!\_\_init\_\_@{\_\_init\_\_}}
+\index{\_\_init\_\_@{\_\_init\_\_}!helper.ActionClientHelper@{helper.ActionClientHelper}}
+\doxysubsubsection{\texorpdfstring{\_\_init\_\_()}{\_\_init\_\_()}}
+{\footnotesize\ttfamily def helper.\+Action\+Client\+Helper.\+\_\+\+\_\+init\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{service\+\_\+name,  }\item[{}]{action\+\_\+type,  }\item[{}]{done\+\_\+callback = {\ttfamily None},  }\item[{}]{feedback\+\_\+callback = {\ttfamily None},  }\item[{}]{mutex = {\ttfamily None} }\end{DoxyParamCaption})}
+
+
+
+Class constructor, i.\+e., class initializer. 
+
+Input parameters are\+:
+
+
+\begin{DoxyParams}{Parameters}
+{\em service\+\_\+name\`{}} & it is the name of the server that will be invoked by this client.\\
+\hline
+{\em action\+\_\+type} & it is the message type that the server will exchange.\\
+\hline
+{\em done\+\_\+callback} & it is the name of the function called when the action server completed its computation. If this parameter is not set (i.\+e., set to {\ttfamily None}), then only the {\ttfamily self.\+\_\+done\+\_\+callback} function will be called when the server completes its computation.\\
+\hline
+{\em feedback\+\_\+callback} & it is the name of the function called when the action server sends a feedback message. If this parameter is not set (i.\+e., set to {\ttfamily None}), then only the {\ttfamily self.\+\_\+feedback\+\_\+callback} functions will be called when the server sends a feedback message.\\
+\hline
+{\em mutex} & it is a {\ttfamily Lock} object synchronised with the {\ttfamily done\+\_\+callback} and {\ttfamily feedback\+\_\+callback}. If it is not set (i.\+e., set to {\ttfamily None}), then a new mutex instance is considered. Set this variable if you want to extends the synchronization with other classes. \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classhelper_1_1_action_client_helper_af97b6d760c5c182589700634da02c87d}\label{classhelper_1_1_action_client_helper_af97b6d760c5c182589700634da02c87d}} 
+\index{helper.ActionClientHelper@{helper.ActionClientHelper}!is\_done@{is\_done}}
+\index{is\_done@{is\_done}!helper.ActionClientHelper@{helper.ActionClientHelper}}
+\doxysubsubsection{\texorpdfstring{is\_done()}{is\_done()}}
+{\footnotesize\ttfamily def helper.\+Action\+Client\+Helper.\+is\+\_\+done (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+
+Get {\ttfamily True} if the action server finished is computation, or {\ttfamily False} otherwise. 
+
+Note that use this method should do it in a {\ttfamily self.\+\_\+mutex} safe manner. \mbox{\Hypertarget{classhelper_1_1_action_client_helper_ad89e3d1883da188dff42984f4b68ee70}\label{classhelper_1_1_action_client_helper_ad89e3d1883da188dff42984f4b68ee70}} 
+\index{helper.ActionClientHelper@{helper.ActionClientHelper}!is\_running@{is\_running}}
+\index{is\_running@{is\_running}!helper.ActionClientHelper@{helper.ActionClientHelper}}
+\doxysubsubsection{\texorpdfstring{is\_running()}{is\_running()}}
+{\footnotesize\ttfamily def helper.\+Action\+Client\+Helper.\+is\+\_\+running (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+
+Get {\ttfamily True} if the action server is running, or {\ttfamily False} otherwise. 
+
+note that use this method should do it in a {\ttfamily self.\+\_\+mutex} safe manner. \mbox{\Hypertarget{classhelper_1_1_action_client_helper_a3ef1d0aa8ccb9cc4953b195161fc6042}\label{classhelper_1_1_action_client_helper_a3ef1d0aa8ccb9cc4953b195161fc6042}} 
+\index{helper.ActionClientHelper@{helper.ActionClientHelper}!send\_goal@{send\_goal}}
+\index{send\_goal@{send\_goal}!helper.ActionClientHelper@{helper.ActionClientHelper}}
+\doxysubsubsection{\texorpdfstring{send\_goal()}{send\_goal()}}
+{\footnotesize\ttfamily def helper.\+Action\+Client\+Helper.\+send\+\_\+goal (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{goal }\end{DoxyParamCaption})}
+
+
+
+Start the action server with a new {\ttfamily goal}. 
+
+Note this call is not blocking (i.\+e., asynchronous performed). 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+scripts/\mbox{\hyperlink{helper_8py}{helper.\+py}}\end{DoxyCompactItemize}
