@@ -10,7 +10,7 @@ Table of contents
 * [Dependencies and Setup](#dependencies-and-setup)
 * [Project structure](#project-structure)
 * [Software Components](#software-components)
-* [Behaviuor Description](#behaviuor-description)
+* [Behaviuor Presentation](#behaviuor-presentation)
 * [Limitations and Possible Improvements](#limitations-and-possible-improvements)
 
 
@@ -127,12 +127,20 @@ Therefore this node manages the overall behaviour of the robot by implementing a
 <p>
 
 #### LoadOntology State: ####
-	aa
+	
+This is the ```Init state``` of the FSM, within which it waits for the map to be loaded, therefore it simply uploads the ontology of the map by calling  helper's function ```"MY_loadOntolgy"```, and then it returs the ```'loaded'``` transition in order to move to the following state i.e. ```Decide```.
+	
 #### Decide State: ####
+
+In this state the robot chooses next move calling helper's function ```ChooseNextMove()``` and plans a path to reach such goal calling ```PlanToNext()```. It will put the results of these function calls into global variables shared among states, then returns ```'low_battery'``` transition if battery gets low during this phase (to move to ```Recharging``` state), otherwise returns ```'decided'``` transition to move to ```Surveillance``` state
+
 #### Surveillance State: ####
+
+In this state the robot simulates time waste to reach the goal through the waypoints planned in ```Decide state```, calling helper's function  ```SimulateMotionTime```, then it actually moves to the next room (again received from ```Decide state```) calling helpers'function ```MoveToNext``` which manipulates the ontology. After that it applies the surveillance algorithm of the new room by calling helper's function ```Survey```. Then it returns ```'low_battery'``` transition if battery gets low during these phases, (to move to ```Recharging``` state), otherwise returns ```'visited'``` transition to move back to ```'Decide'``` state.
+	
 #### Recharging State: ####
 	
-	
+Robot gets in this state when its battery gets low, here it will first move to reach the recharging station thanks to helper's function ```"GoToRechargingStation()"```
 ----------------------
 ### Controller node  : ###
 
@@ -144,12 +152,12 @@ Therefore this node manages the overall behaviour of the robot by implementing a
 	
 ----------------------
 ### Robot-State node  : ### 
-	credits to arch ma ho leggermente cambiato in particolare eliminando parti non utili alla mia applicazione sttando due range diversi da cui scegliere il tempo necessario a scarica o carica
+credits to arch ma ho leggermente cambiato in particolare eliminando parti non utili alla mia applicazione sttando due range diversi da cui scegliere il tempo necessario a scarica o carica
 	
 	
 spiego come radme del prof in arch_scheleton, i singoli nodi cosa fanno (sub/publish ecc + spiegazione del codice!) 
 	
-RIGUARDO helper.py, dopo l'introduzione generale, spiego solo i metodi chiave in sottocapitoletti, ad esempio 
+RIGUARDO helper.py, dopo l'introduzione generale, spiego solo i metodi chiave in sottocapitoletti, ad esempio --SPIEGO QUELLI CHE VENGONO CHIAMATI IN FSM!!!!!
 	
 "loadOntology...carica onto facendo query ecc ecc NOTA RIPETUTO 3 VOLTE PER BUG e infine la salva in file.
 	
@@ -162,7 +170,7 @@ RIGUARDO FSM.PY MOSTRO LA MSF OTTENUTA
 	
  
 
-## Behaviuor Description
+## Behaviuor Presentation
  
 QUI SPIEGO QUINDI COSA FA PASSO PASSO IL MIO CODICE MOSTRANDO ANCHE GLI SCREEN DEL TERMINALE PER OGNI STEP	
 
