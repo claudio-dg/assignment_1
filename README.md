@@ -90,8 +90,8 @@ This repository contains a ROS package called ```"assignment_1"``` that includes
 - [CMakeList.txt](https://github.com/claudio-dg/assignment_1/blob/main/CMakeLists.txt): File to configure this package.
 - [package.xml](https://github.com/claudio-dg/assignment_1/blob/main/package.xml): File to configure this package.
 - [Docs/](https://github.com/claudio-dg/assignment_1/tree/main/Docs): folder containing ```Doxygen documentation``` of the package
-- [images/](https://github.com/claudio-dg/assignment_1/tree/main/images): folder containing images and graphs used within this [Readme](https://github.com/claudio-dg/assignment_1/blob/main/README.md).
-- [scripts/](https://github.com/claudio-dg/assignment_1/tree/main/scripts): It contains the implementation of each software components produced for this script.
+- [images/](https://github.com/claudio-dg/assignment_1/tree/main/images): folder containing images and graphs used within this [README](https://github.com/claudio-dg/assignment_1/blob/main/README.md).
+- [scripts/](https://github.com/claudio-dg/assignment_1/tree/main/scripts): It contains the implementation of each software components produced for this project.
 	
 	* [FSM.py](https://github.com/claudio-dg/assignment_1/blob/main/scripts/FSM.py): contains the implementation of the SMACH Finite States Machine
 	
