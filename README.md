@@ -11,6 +11,7 @@ Table of contents
 * [Project structure](#project-structure)
 * [Software Components](#software-components)
 * [Behaviuor Description](#behaviuor-description)
+* [Limitations and Possible Improvements](#limitations-and-possible-improvements)
 
 
 ## Introduction
@@ -123,8 +124,12 @@ RIGUARDO FSM.PY MOSTRO LA MSF OTTENUTA
 QUI SPIEGO QUINDI COSA FA PASSO PASSO IL MIO CODICE MOSTRANDO ANCHE GLI SCREEN DEL TERMINALE PER OGNI STEP	
 
  
+ ## Limitations and Possible Improvements
  
- 
- 
+The main limitations of this project are related to the current implementation of ```Planning``` and ```Controlling``` algorithms. Here in fact, the code written in  [planner.py](https://github.com/claudio-dg/assignment_1/blob/main/scripts/planner.py) and in [controller.py](https://github.com/claudio-dg/assignment_1/blob/main/scripts/controller.py), only allow to ```simulate``` these actions, without actually thinking about how to reach a real room in the environment, but instead simulating the time waste of this planning action along with the one required for actually moving along the planned path. 
+	
+Therefore possible improvements could involve the implementation of a better algorithm that actually takes into account a real environment in order to plan some real waypoints to reach a real position, while regarding the controller node, a better algorithm could take information from a real robot to actually control it along the planned path.
+	
+In addition to this the implementation of the robot battery could be further improved, since for now it is just represented by a boolean value changing randomly its value after some predefined time, so a better algoritmh could be used to discharge the robot accordingly with the travelled distance for instance. Moreover another limition about it is that, if we use this particular robot simulaton within a wider map, it could happen that robot may actually receive the "recharged" battery state before actually reaching the Recharging station, therefore the algorithm based on "travelled distance" previously named could help als in this case, avoiding the robot to reach locations that are too far from its recharging station ,that would prevent him to go back and recharge its battery.
  
 
