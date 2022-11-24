@@ -50,14 +50,15 @@ behavior is repeated in a infinite loop. When robot’s battery is not low, it s
 
 In order to run correctly the project of this repository, some important dependencies have to be taken into account, therefore please make sure to have the following packages already installed in your ```ros_workspace```:
 - [arch_skeleton](https://github.com/buoncubi/arch_skeleton): from which I retrieved useful [actions](https://github.com/buoncubi/arch_skeleton/tree/main/action), [messages](https://github.com/buoncubi/arch_skeleton/tree/main/msg) [services](https://github.com/buoncubi/arch_skeleton/tree/main/srv) and [utilities](https://github.com/buoncubi/arch_skeleton/tree/main/utilities/arch_skeleton)	to implement the planner and controller of this repository. Please note that credits for the planner and controller also go this repository, since they have been implemented starting from the example there shown and slightly adapting them to my needs.
-- [topological_map](https://github.com/buoncubi/topological_map): from which I retrieved the [topoogical_map.owl](https://github.com/buoncubi/topological_map/blob/main/topological_map.owl), to use it as starting point for creating my ```ontology``` of the environment for the assignment, which will be created in run time and saved as a .owl file in the ```topological_map``` folder.
+- [topological_map](https://github.com/buoncubi/topological_map): from which I retrieved the [topological_map.owl](https://github.com/buoncubi/topological_map/blob/main/topological_map.owl), to use it as starting point for creating my ```ontology``` of the environment for the assignment, which will be created in run time and saved as a .owl file in the ```topological_map``` folder.
 - [aRMOR](https://github.com/EmaroLab/armor): which is necessary to use an OWL ```ontology``` and the related ```reasoner``` within ROS. Particularly useful is the [armor_py_api](https://github.com/EmaroLab/armor_py_api), which simplifies the calls to aRMOR, but can only be used from a python-based ROS node, and it allows to interact with ontologies with three types of operations: manipulations, queries, and ontology management.
 
 In the end, the Finite States Machine here implemented is based on [SMACH](http://wiki.ros.org/smach) libraries.
-To try it, it is sufficient to clone this repository in your ROS workspace: 
+	
+When all these are correctly installed, to try this repository it is necessary to: clone this repository in your ROS workspace: 
 
 ```bash
-$ git clone https://github.com/claudio-dg/final_assignment.git
+$ git clone [https://github.com/claudio-dg/final_assignment.git](https://github.com/claudio-dg/assignment_1.git)
 ```
 
 and then type the following command in the terminal to simultaneously launch all the necessary nodes through the **"launchFile"**:
