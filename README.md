@@ -23,7 +23,13 @@ The 2D environment has to be produced making use of Armor_api to create an ontol
 <p>
 <img src="https://github.com/claudio-dg/assignment_1/blob/main/images/assignment_1_rosgraph.png?raw=true" width="850" />
 <p>
-
+	
+	
+<!--  immagine del rqt graph
+<p>
+<img src="https://github.com/claudio-dg/assignment_1/blob/main/images/assignment_1_rosgraph.png?raw=true" width="850" />
+<p>
+-->
 Within this environment, the robot should:
 
 1. start in the E location and waits until it receives the information to build the 
