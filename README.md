@@ -37,7 +37,7 @@ topological map,i.e., the relations between C1, C2, R1, R2, R3 locations and the
 2. move in a new location, and should wait for some time before visiting another location. This 
 behavior is repeated in a infinite loop. When robot’s battery is not low, it should move among locations with this policy:
 - It should mainly stay on corridors,
-– If a reachable room has not been visited for some time, it becomes ```URGENT``` and the robot should visit it.
+- If a reachable room has not been visited for some time, it becomes ```URGENT``` and the robot should visit it.
 3. When the robot’s ```battery is low```, it should go in the E location, and wait for some time before starting again with the above behavior
 
 To define the behaviour of the robot we have to create a Finite States Machine using SMACH libraries
