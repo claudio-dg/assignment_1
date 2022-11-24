@@ -25,10 +25,7 @@ The 2D environment has to be produced making use of Armor_api to create an ontol
 <p>
 	
 	
-<!--  immagine del rqt graph
-<p>
-<img src="https://github.com/claudio-dg/assignment_1/blob/main/images/assignment_1_rosgraph.png?raw=true" width="850" />
-<p>
+<!--  
 -->
 Within this environment, the robot should:
 
@@ -82,23 +79,18 @@ $ roslaunch assignmnent_1 start_simulation.launch
 
 ## Project structure
 
-The project is based on the ROS scheme that is shown in the following graph:
+The project is based on the ROS scheme that is shown in the following ```rqt_graph```:
 
 <p align="center">
 <img src="https://github.com/claudio-dg/assignment_1/blob/main/images/assignment_1_rosgraph.png?raw=true" width="850" />
 <p>
  
-<!-- 
-The ROS package of the project is called ```"final_assignment"```, it exploits two already given packages: ```slam_gmapping```, which opens the environment and allows the robot to create a map of what sorrounds him, and ```move_base```, which requires a goal to be sent to the topic ```move_base/goal``` in order to make the robot move towards it.
-	
-In addition to these i created two nodes contained in ```src``` folder named ```InputConsole``` and ```controller```; as the name suggests the first one is encharged of taking user's inputs to select the desired behaviour of the robot, while the second one manages the consequences of user's request by communicating with other nodes, for instance by sending the goal's coordinates to ```move_base/goal``` with a msg of type :```move_base_msgs/MoveBaseActionGoal```.
-The communication between my two nodes is implemented through a ```Publish/Subscribe``` architecture using two different topics ```MY_topic_teleop```  & ```MY_topic_send_goal```: in this way I made a structure in which the input given by the user determines which callback is going to be called in the controller node, so that the "async structure" required by this assignment was possible.
-	
-- Regarding point 1) I used the ```\move_base\feedback``` topic to retreive information about robot's status such as the current position or the time counter: thanks to these two pieces of information I implemented an algorithm to state whether the goal was reached or not (considering an approximation error due to the fact that the robot seemed to get really close to the goal but never reaching its exact coordinates), and a TIMEOUT, so that if the robot doesen't reach the goal in Time it is considered unreachable and will be canceled by sending a msg to ```\move_base\cancel``` topic
-		
-- Regarding points 2) and 3) of the assignment I remapped an already existing topic (```teleop_twist_keyboard```) so that instead of publishing directly on ```cmd_vel``` it publishes on my personal topic ```myRemapped_cmd_vel```: by doing this I manage to consider the velocities published by this topic only when required, that is when the user selected mode 2) or 3), furthermore it allowed me to add the collision avoidance functionality needed for the third part of the assignment. 
+This repository contains a ROS package called ```"assignment_1"``` that includes the following resources:
 
--->
+- [CMakeList.txt](https://github.com/claudio-dg/assignment_1/blob/main/CMakeLists.txt): File to configure this package.
+- [package.xml](https://github.com/claudio-dg/assignment_1/blob/main/package.xml): File to configure this package.
+
+	
  
 ## Software Components
 
