@@ -110,8 +110,9 @@ This repository contains a ROS package called ```"assignment_1"``` that includes
 ## Software Components
 
 Here are shown the details of each software component implemented in this repository and contained in the ```scripts/``` folder.
+
 ### FSM node: ###
-----------------------
+
 	
 This node is "indirectly" subscribed to ```/state/battery_low``` topic to receive continuous information about the battery state, in the sense that the subscriber is not directly initialised within the ```"FSM.py"```script, rather it is obtained through the functions defined in the ```helper.py``` that gets called in each class of this node.
 	
@@ -132,14 +133,16 @@ Therefore this node manages the overall behaviour of the robot by implementing a
 #### Recharging State: ####
 	
 	
-	
-### Controller node  : ###
 ----------------------
-	
+### Controller node  : ###
+
+----------------------	
 ### Planner node  : ###
 	
+----------------------
 ### Helper classes  : ###
 	
+----------------------
 ### Robot-State node  : ### 
 	credits to arch ma ho leggermente cambiato in particolare eliminando parti non utili alla mia applicazione sttando due range diversi da cui scegliere il tempo necessario a scarica o carica
 	
