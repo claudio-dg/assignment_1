@@ -111,13 +111,27 @@ This repository contains a ROS package called ```"assignment_1"``` that includes
 
 Here are shown the details of each software component implemented in this repository and contained in the ```scripts/``` folder.
 ### FSM node: ###
-
-This node manages the overall behaviour of the robot by implementing a ```Finite States Machine``` that is made of 4 different states (```LoadOntology```, ```Decide```, ```Surveillance```, ```Recharging```), that are reached through 5 different transitions (```'loaded'```,```'decided'```,```'visited'```,```'low_battery'```,```'recharged'```), as shown in the following graph obtained with ```smach_viewer```.
+	
+This node is "indirectly" subscribed to ```/state/battery_low``` topic to receive continuous information about the battery state, in the sense that the subscriber is not directly initialised within the ```"FSM.py"```script, rather it is obtained through the functions defined in the ```helper.py``` that gets called in class of this node.
+	
+In the same way it presents the ```CLients``` to ```/motion/planner``` and ```/motion/controller``` Services in order to call them respectively: to plan a random plan of waypoints and to move the robot throughout them.
+	
+Last it presents a client for the ```armor_interface_srv``` service to interact with the ontology with the ```aRMOR_api```.	
+	
+Therefore this node manages the overall behaviour of the robot by implementing a ```Finite States Machine``` that is made of 4 different states (```LoadOntology```, ```Decide```, ```Surveillance```, ```Recharging```), that are reached through 5 different transitions (```'loaded'```,```'decided'```,```'visited'```,```'low_battery'```,```'recharged'```), as shown in the following graph obtained with ```smach_viewer```.
 
 <p align="center">
 <img src="https://github.com/claudio-dg/assignment_1/blob/main/images/FSM.png?raw=true" width="400" />
 <p>
-Therefore this node doesn
+
+#### LoadOntology State: ####
+	aa
+#### Decide State: ####
+#### Surveillance State: ####
+#### Recharging State: ####
+	
+	
+	
 ### Controller node  : ###
 	
 ### Planner node  : ###
