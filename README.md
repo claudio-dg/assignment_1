@@ -8,8 +8,8 @@ Table of contents
 
 * [Introduction](#introduction)
 * [Dependencies and Setup](#dependencies-and-setup)
-* [Gazebo and Rviz Maps](#gazebo-and-rviz-maps)
-* [Project structure and behaviour description](#project-structure-and-behaviour-description)
+* [Project structure](#project-structure)
+* [Software Components](#software-components)
 * [PseudoCode](#pseudocode)
 * [RT2 Assignment](#rt2-assignment)
 
@@ -20,7 +20,7 @@ The goal of this assignment is to Develop a software architecture to control a r
 
 The 2D environment has to be produced making use of Armor_api to create an ontology, and should resemble the following map, made of 4 rooms and 3 corridors:
 
-<p>
+<p><p align="center">
 <img src="https://github.com/claudio-dg/assignment_1/blob/main/images/map.png?raw=true" width="400" />
 <p>
 	
@@ -80,28 +80,15 @@ After that you can type the following command in the terminal to simultaneously 
 $ roslaunch assignmnent_1 start_simulation.launch
 ```
 
-## Gazebo and Rviz Maps
-
-The environment used for this assignment consists in the map illustrated (froma Gazebo view) in the following image:
-
-<p>
-<img src="https://github.com/claudio-dg/final_assignment/blob/main/images/Gazebo.png?raw=true" width="450" />
-<p>
-
-Rviz instead gives another point of view of the same environment, that is from robot sensors' point of view: the robot, in fact, does not know from the beginning the full map he's in, but thanks to the laser sensors and the ```gmapping``` package he is capable of creating it.
-
-<p>
-<img src="https://github.com/claudio-dg/final_assignment/blob/main/images/Rviz.png?raw=true" width="400"/>
-<p>
-	
-## Project structure and behaviour description
+## Project structure
 
 The project is based on the ROS scheme that is shown in the following graph:
 
 <p align="center">
-<img src="https://github.com/claudio-dg/final_assignment/blob/main/images/final_assign_rosgraph.png?raw=true" width="900"  />
+<img src="https://github.com/claudio-dg/assignment_1/blob/main/images/assignment_1_rosgraph.png?raw=true" width="850" />
 <p>
  
+
 The ROS package of the project is called ```"final_assignment"```, it exploits two already given packages: ```slam_gmapping```, which opens the environment and allows the robot to create a map of what sorrounds him, and ```move_base```, which requires a goal to be sent to the topic ```move_base/goal``` in order to make the robot move towards it.
 	
 In addition to these i created two nodes contained in ```src``` folder named ```InputConsole``` and ```controller```; as the name suggests the first one is encharged of taking user's inputs to select the desired behaviour of the robot, while the second one manages the consequences of user's request by communicating with other nodes, for instance by sending the goal's coordinates to ```move_base/goal``` with a msg of type :```move_base_msgs/MoveBaseActionGoal```.
@@ -112,26 +99,23 @@ The communication between my two nodes is implemented through a ```Publish/Subsc
 - Regarding points 2) and 3) of the assignment I remapped an already existing topic (```teleop_twist_keyboard```) so that instead of publishing directly on ```cmd_vel``` it publishes on my personal topic ```myRemapped_cmd_vel```: by doing this I manage to consider the velocities published by this topic only when required, that is when the user selected mode 2) or 3), furthermore it allowed me to add the collision avoidance functionality needed for the third part of the assignment. 
 
 
- ### Behaviour description  : ### 
-
-After having launched all the required launch files Gazebo and Rviz environments will open, along with 3 different terminals:
-* ```Input Console``` : in which you can select what to do and that will show the following user interface:
-```bash
-***********THIS IS THE INPUT CONSOLE***********
-
-Which Action do you want to use to move the robot?
-ENTER 'c' to cancel last given goal
-ENTER '1' to send a new goal to the robot
-ENTER '2  to manually drive the robot
-ENTER '3' to manually drive the robot WITH assisted collision avoidance
-ENTER 'q' to terminate this node
-```
-
-* ```Controller Console``` : that will show some useful real-time info depending on the modality selected in the input console, such as the elapsed time since the goal was given or some notifications to inform the user tha a certain direction will probably cause a collision.
-* ```TeleopTwist Keyboard Console``` : in which the user can insert commands to manually drive the robot that will only be read if modality 2) or 3) were previously selected through the input console. 
  
+## Software Components
 
+spiego come radme del prof in arch_scheleton, i singoli nodi cosa fanno (sub/publish ecc + spiegazione del codice!) 
 	
+RIGUARDO helper.py, dopo l'introduzione generale, spiego solo i metodi chiave in sottocapitoletti, ad esempio 
+	
+"loadOntology...carica onto facendo query ecc ecc NOTA RIPETUTO 3 VOLTE PER BUG e infine la salva in file.
+	
+chooseNextMove --> implementa algoritmo di scelta (spiego algo: controllo ogni colta batteria, se non e scarica controllo urg ecc ecc)
+
+poi boh quelli sulla batteria, poi go to recharging e boh
+	
+RIGUARDO FSM.PY MOSTRO LA MSF OTTENUTA
+<p align="center">
+<img src="https://github.com/claudio-dg/assignment_1/blob/main/images/FSM.png?raw=true" width="850" />
+<p>
 	
  ## Pseudocode
  
