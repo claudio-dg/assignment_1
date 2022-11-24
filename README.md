@@ -88,7 +88,7 @@ The project is based on the ROS scheme that is shown in the following graph:
 <img src="https://github.com/claudio-dg/assignment_1/blob/main/images/assignment_1_rosgraph.png?raw=true" width="850" />
 <p>
  
-
+<!-- 
 The ROS package of the project is called ```"final_assignment"```, it exploits two already given packages: ```slam_gmapping```, which opens the environment and allows the robot to create a map of what sorrounds him, and ```move_base```, which requires a goal to be sent to the topic ```move_base/goal``` in order to make the robot move towards it.
 	
 In addition to these i created two nodes contained in ```src``` folder named ```InputConsole``` and ```controller```; as the name suggests the first one is encharged of taking user's inputs to select the desired behaviour of the robot, while the second one manages the consequences of user's request by communicating with other nodes, for instance by sending the goal's coordinates to ```move_base/goal``` with a msg of type :```move_base_msgs/MoveBaseActionGoal```.
@@ -98,7 +98,7 @@ The communication between my two nodes is implemented through a ```Publish/Subsc
 		
 - Regarding points 2) and 3) of the assignment I remapped an already existing topic (```teleop_twist_keyboard```) so that instead of publishing directly on ```cmd_vel``` it publishes on my personal topic ```myRemapped_cmd_vel```: by doing this I manage to consider the velocities published by this topic only when required, that is when the user selected mode 2) or 3), furthermore it allowed me to add the collision avoidance functionality needed for the third part of the assignment. 
 
-
+-->
  
 ## Software Components
 
@@ -114,7 +114,7 @@ poi boh quelli sulla batteria, poi go to recharging e boh
 	
 RIGUARDO FSM.PY MOSTRO LA MSF OTTENUTA
 <p align="center">
-<img src="https://github.com/claudio-dg/assignment_1/blob/main/images/FSM.png?raw=true" width="850" />
+<img src="https://github.com/claudio-dg/assignment_1/blob/main/images/FSM.png?raw=true" width="400" />
 <p>
 	
  ## Pseudocode
