@@ -21,7 +21,7 @@ The goal of this assignment is to Develop a software architecture to control a r
 The 2D environment has to be produced making use of Armor_api to create an ontology, and should resemble the following map, made of 4 rooms and 3 corridors:
 
 <p>
-<img src="https://github.com/claudio-dg/assignment_1/blob/main/images/assignment_1_rosgraph.png?raw=true" width="700" />
+<img src="https://github.com/claudio-dg/assignment_1/blob/main/images/assignment_1_rosgraph.png?raw=true" width="850" />
 <p>
 
 Within this environment, the robot should:
