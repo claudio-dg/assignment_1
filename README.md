@@ -33,9 +33,9 @@ The 2D environment has to be produced making use of Armor_api to create an ontol
 Within this environment, the robot should:
 
 1. start in the E location and waits until it receives the information to build the 
-topological map,i.e., the relations between C1, C2, R1, R2, R3 locations and the doors D1...D6.
+```topological map```, i.e. the relations between C1, C2, R1, R2, R3 locations and the doors D1...D6.
 2. move in a new location, and should wait for some time before visiting another location. This 
-behavior is repeated in a infinite loop. When robot’s battery is not low, it should move among locations with this policy:
+behavior is repeated in a infinite loop. When robot’s battery is not low, it should move among locations with this ```policy```:
 - It should mainly stay on corridors,
 - If a reachable room has not been visited for some time, it becomes ```URGENT``` and the robot should visit it.
 3. When the robot’s ```battery is low```, it should go in the E location, and wait for some time before starting again with the above behavior
@@ -48,7 +48,9 @@ behavior is repeated in a infinite loop. When robot’s battery is not low, it s
 
 ##  Dependencies and Setup
 
-In order to run correctly the project of this repository, some important dependencies have to be taken into account
+In order to run correctly the project of this repository, some important dependencies have to be taken into account, therefore please make sure to have the following packages already installed in your workspace:
+- [arch_skeleton](https://github.com/buoncubi/arch_skeleton): from which I retrieved useful [actions](https://github.com/buoncubi/arch_skeleton/tree/main/action), [messages](https://github.com/buoncubi/arch_skeleton/tree/main/msg) and [services](https://github.com/buoncubi/arch_skeleton/tree/main/srv)	to implement the planner and controller of this repository. Please note that credits for the planner and controller also go this repository, since they have been implemented starting from the example there shown and slightly adapthing them to my needs.
+- []()
 
 In the end, the Finite States Machine here implemented is based on [SMACH](http://wiki.ros.org/smach) libraries.
 To try it, it is sufficient to clone this repository in your ROS workspace: 
