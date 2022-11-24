@@ -455,11 +455,11 @@ def ChooseNextMove(self):
                     print("THERE ARE NO REACHABLE URGENT ROOMS, give preference to CORRIDOS, chose -> ",next_room ,"among -> ", possible_corridors)
                 return next_room
 ```
-#### MY_LoadOntology(self)  : ####
-#### MY_LoadOntology(self)  : ####
-#### MY_LoadOntology(self)  : ####
-#### MY_LoadOntology(self)  : ####
-#### MY_LoadOntology(self)  : ####
+#### PlanToNext(self, check_battery): ####
+#### SimulateMotionTime(self, plan, check_battery): ####
+#### MoveToNext(self, new_position):  : ####
+#### Survey(self): ####
+#### GoToRechargingStation(self): ####
 
 
 
