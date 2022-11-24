@@ -129,18 +129,155 @@ Therefore this node manages the overall behaviour of the robot by implementing a
 #### LoadOntology State: ####
 	
 This is the ```Init state``` of the FSM, within which it waits for the map to be loaded, therefore it simply uploads the ontology of the map by calling  helper's function ```"MY_loadOntolgy"```, and then it returs the ```'loaded'``` transition in order to move to the following state i.e. ```Decide```.
-	
+
+```bash
+class LoadOntology(smach.State):
+
+    def __init__(self, my_helper):
+        # initialisation function, it should not wait
+        self._helper = my_helper
+
+        smach.State.__init__(self,
+                             outcomes=['loaded','decided','visited','low_battery','recharged'])
+
+    def execute(self, userdata):
+        # function called when exiting from the node, it can be blocking
+        print('+++++ Executing state LoadOntology +++++')
+        self._helper.MY_LoadOntology()
+        print('Loading Ontology...')
+        rospy.sleep(4)
+        return 'loaded'	
+```
 #### Decide State: ####
 
-In this state the robot chooses next move calling helper's function ```ChooseNextMove()``` and plans a path to reach such goal calling ```PlanToNext()```. It will put the results of these function calls into global variables shared among states, then returns ```'low_battery'``` transition if battery gets low during this phase (to move to ```Recharging``` state), otherwise returns ```'decided'``` transition to move to ```Surveillance``` state
+In this state the robot chooses next move calling helper's function ```ChooseNextMove()``` and plans a path to reach such goal calling ```PlanToNext()```. It will put the results of these function calls into global variables shared among states, then returns ```'low_battery'``` transition if battery gets low during this phase (to move to ```Recharging``` state), otherwise returns ```'decided'``` transition to move to ```Surveillance``` state.
+	
+```bash
+class Decide(smach.State):
 
+    def __init__(self,my_helper):
+        self._helper = my_helper
+        self.check_battery = 1
+        smach.State.__init__(self,
+                             outcomes=['loaded','decided','visited','low_battery','recharged'])
+ 
+    def execute(self, userdata):
+        print(' +++++ Executing state Decide +++++')
+        global chosen_location
+        global path_planned
+
+        try:
+            # CHOOSE NEXT LOCATION
+            chosen_location = self._helper.ChooseNextMove()
+            if(chosen_location == 0):
+                # low_battery battery occured
+                return 'low_battery'
+            else:
+                # Room chosen successfully
+                print("NEXT ROOM WILL BE --> ", chosen_location)
+                # PLAN A PATH TO REACH NEXT LOCATION
+                path_planned = self._helper.PlanToNext(self.check_battery)
+                if(path_planned == 0):
+                    # low_battery battery occured
+                    return 'low_battery'
+                else:
+                    # path planned successfully
+                    # print('path planned successfully -> ', path_planned)
+                    print('PATH PLANNED SUCCESSFULLY')
+                    return 'decided'
+        finally:
+            rospy.sleep(0.1)	
+```
 #### Surveillance State: ####
 
 In this state the robot simulates time waste to reach the goal through the waypoints planned in ```Decide state```, calling helper's function  ```SimulateMotionTime```, then it actually moves to the next room (again received from ```Decide state```) calling helpers'function ```MoveToNext``` which manipulates the ontology. After that it applies the surveillance algorithm of the new room by calling helper's function ```Survey```. Then it returns ```'low_battery'``` transition if battery gets low during these phases, (to move to ```Recharging``` state), otherwise returns ```'visited'``` transition to move back to ```'Decide'``` state.
+
+```bash
+class Surveillance(smach.State):
+    def __init__(self,my_helper):
+        # initialisation function, it should not wait
+        self._helper = my_helper
+        self.check_battery = 1
+        smach.State.__init__(self,
+                             outcomes=['loaded','decided','visited','low_battery','recharged'])
+       
+    def execute(self, userdata):
+        print(' +++++ Executing state Surveillance +++++')
+        # retrieve the location and path computed in'Decide' state from global variables
+        global chosen_location
+        global path_planned
+
+        # SIMULATE GOAL REACHING WITH CONTROLLER
+        motion_completed = self._helper.SimulateMotionTime(path_planned,self.check_battery)
+
+        if(motion_completed == 0):
+            # low battery occured
+            return 'low_battery'
+        else:
+            # plan followed successfully
+            self._helper.MoveToNext(chosen_location)
+            # SURVEY LOCATION
+            visited = self._helper.Survey()
+            if(visited == 0):
+                # low battery occured
+                return 'low_battery'
+            else:
+                # Surveillance completed successfully
+                print("SURVEILLANCE OVER.. ")
+                rospy.sleep(1)
+                return 'visited	
+```
+	
+	
 	
 #### Recharging State: ####
 	
-Robot gets in this state when its battery gets low, here it will first move to reach the recharging station thanks to helper's function ```"GoToRechargingStation()"```
+Robot gets in this state when its battery gets low, here it will first move to reach the recharging station thanks to helper's function ```"GoToRechargingStation()"```, then it will start the recharging phase by calling this state in loop (through the ```low_battery``` transition) until the robot battery gets high. At that point it will return ```recharged``` transition to go to ```Decide``` state.
+	
+```bash
+class Recharging(smach.State):
+    def __init__(self,my_helper):
+        # initialisation function, it should not wait
+        self._helper = my_helper
+        smach.State.__init__(self,
+                             outcomes=['loaded','decided','visited','low_battery','recharged'])
+        self.time = 0
+        self.station_reached = 0
+	
+    def execute(self, userdata):
+        # function called when exiting from the node, it can be blacking
+        print('+++++ Executing state Recharging +++++')
+
+        # FIRST REACH THE RECHARGING STATION IN ORDER TO START THE RECHARGING PROCESS
+        if(not self.station_reached):
+            self.station_reached = self._helper.GoToRechargingStation()
+            return 'low_battery'
+
+        else:
+            self._helper.mutex.acquire()
+            try:
+                if(self._helper.is_battery_low()):
+                    # until battery is low
+                    print("I AM RECHARGING THE BATTERY-- ELSAPSED TIME: ", str(int(self.time)), "seconds", end ='\r')
+                    self.time += 1
+                    rospy.sleep(1)
+                     # repeat this state until battery is charged
+                    return 'low_battery'
+                else: # battery fully charged
+                    print("BATTERY FULLY CHARGED AFTER : ", str(int(self.time)), "seconds") #print non funza
+                    # reset variables
+                    self.time = 0
+                    self.station_reached = 0
+                    return 'recharged'
+            finally:
+                # Release the mutex to unblock the `self._helper` subscription threads if they are waiting.
+                self._helper.mutex.release()
+            # Wait for a reasonably small amount of time to allow `self._helper` processing stimulus (eventually).
+            rospy.sleep(1)
+```
+	
+	
+	
 ----------------------
 ### Controller node  : ###
 
