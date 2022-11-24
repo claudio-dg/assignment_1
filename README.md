@@ -285,13 +285,181 @@ This node has been taken from [arch_skeleton](https://github.com/buoncubi/arch_s
 ----------------------	
 ### Planner node  : ###
 This node has been taken from [arch_skeleton](https://github.com/buoncubi/arch_skeleton) repository, slightly adapting to the needs of my project, and implements an action server named ```motion/planner```. Here the modifications are mainly represented by some parameters changes, therefore the structure of the node is inviariated, for this reason please consult [arch_skeleton](https://github.com/buoncubi/arch_skeleton) repository for further documentation
+
+
 ----------------------
 ### Helper classes  : ###
 As previously said, the script ```helper.py``` contains the implementation of two different helper classes: ```ActionClientHelper``` & ```Helper```. The first one is a class to simplify the implementation of a client for ROS action servers, and has been taken from [arch_skeleton](https://github.com/buoncubi/arch_skeleton) repository in order to implement the planning and controlling action, so please check the linked repository for further documentation.
+
+
 The second one instead is an helper class I made to simplify the interaction with the ontology through aRMOR, and therefore to define useful functions to be used in the Finite states machine script (```FSM.py```). Here you can find the definition of the subscriber to ```/state/battery_low``` topic to receive continuous information about the battery state previously named in ```FSM node```, as well as the definition of the```clients``` to ```/motion/planner``` and ```/motion/controller``` Services.
 
 
+Here follows the code explanation of the main functions of this class, that are the ones that get called directly by ```FSM node```:
 
+#### MY_LoadOntology(self)  : ####
+This function creates the map adding all the locations, doors and required properties to the ontology ```/topological_map.owl``` by using the "manipulation" tool of aRMOR_api client, then saves the result in a new file named ```MY_topological_map.owl```. Please note that here, due to some strange bugs, it has been necessary to have this function repeating the same actions 3 times with a while loop, because the manipulations were not correctly applied in the first 2 iterations, and therefore the reasoner was not able of correctly reasoning about the ontology.
+
+```bash
+def MY_LoadOntology(self):
+        i = 1 
+        done_once = 0 # to load timestamps only once
+        while i <=3:
+
+            # ADD ALL OUR AXIOMS
+            if(client.manipulation.add_ind_to_class("R1", "LOCATION") and i == 3): #mettere if per checcare
+                print("Added R1 to LOCATION")
+            if(client.manipulation.add_ind_to_class("R2", "LOCATION") and i == 3):
+                print("Added R2 to LOCATION")
+            if(client.manipulation.add_ind_to_class("R3", "LOCATION")and i == 3):
+                print("Added R3 to LOCATION")
+            if(client.manipulation.add_ind_to_class("R4", "LOCATION")and i == 3):
+                print("Added R4 to LOCATION")
+            if(client.manipulation.add_ind_to_class("C1", "LOCATION")and i == 3):
+                print("Added C1 to LOCATION")
+            if(client.manipulation.add_ind_to_class("C2", "LOCATION")and i == 3):
+                print("Added C2 to LOCATION")
+            if(client.manipulation.add_ind_to_class("E", "LOCATION")and i == 3):
+                print("Added E to LOCATION")
+            if(client.manipulation.add_ind_to_class("D1", "DOOR")and i == 3):
+                print("Added D1 to DOOR")
+            if(client.manipulation.add_ind_to_class("D2", "DOOR")and i == 3):
+                print("Added D2 to DOOR")
+            if(client.manipulation.add_ind_to_class("D3", "DOOR")and i == 3):
+                print("Added D3 to DOOR")
+            if(client.manipulation.add_ind_to_class("D4", "DOOR")and i == 3):
+                print("Added D4 to DOOR")
+            if(client.manipulation.add_ind_to_class("D5", "DOOR")and i == 3):
+                print("Added D5 to DOOR")
+            if(client.manipulation.add_ind_to_class("D6", "DOOR")and i == 3):
+                print("Added D6 to DOOR")
+            if(client.manipulation.add_ind_to_class("D7", "DOOR")and i == 3):
+                print("Added D7 to DOOR")
+
+
+            # DISJOINT OF THE INDIVIDUALS OF THE CLASSES
+            client.manipulation.disj_inds_of_class("LOCATION")
+            client.manipulation.disj_inds_of_class("DOOR")
+
+            # ADD PROPERTIES TO OBJECTS
+            # Distinction between rooms and corridors
+            client.manipulation.add_objectprop_to_ind("hasDoor", "R1", "D1")
+            client.manipulation.add_objectprop_to_ind("hasDoor", "R2", "D2")
+            client.manipulation.add_objectprop_to_ind("hasDoor", "R3", "D3")
+            client.manipulation.add_objectprop_to_ind("hasDoor", "R4", "D4")
+            client.manipulation.add_objectprop_to_ind("hasDoor", "C1", "D1")
+            client.manipulation.add_objectprop_to_ind("hasDoor", "C1", "D2")
+            client.manipulation.add_objectprop_to_ind("hasDoor", "C1", "D5")
+            client.manipulation.add_objectprop_to_ind("hasDoor", "C1", "D7")
+            client.manipulation.add_objectprop_to_ind("hasDoor", "C2", "D3")
+            client.manipulation.add_objectprop_to_ind("hasDoor", "C2", "D4")
+            client.manipulation.add_objectprop_to_ind("hasDoor", "C2", "D5")
+            client.manipulation.add_objectprop_to_ind("hasDoor", "C2", "D6")
+            client.manipulation.add_objectprop_to_ind("hasDoor", "E", "D6")
+            client.manipulation.add_objectprop_to_ind("hasDoor", "E", "D7")
+
+
+                # Distinction between individuals
+            client.call('DISJOINT', 'IND', 'CLASS', ["R1","R2","R3","R4", "C1","C2", "D1", "D2", "D3", "D4", "D5", "D5", "D7"]) #IOOOOOOOOO
+
+                # INITIALIZE ROBOT POSITION
+            client.manipulation.add_objectprop_to_ind("isIn", "Robot1", "E")
+                # ADD timestamps
+            if(done_once == 0):
+                client.manipulation.add_dataprop_to_ind("visitedAt","R1",'Long',str(int(time.time())))
+                client.manipulation.add_dataprop_to_ind("visitedAt","R2",'Long',str(int(time.time())))
+                client.manipulation.add_dataprop_to_ind("visitedAt","R3",'Long',str(int(time.time())))
+                client.manipulation.add_dataprop_to_ind("visitedAt","R4",'Long',str(int(time.time())))
+                done_once = 1
+
+            # APPLY CHANGES
+            client.utils.apply_buffered_changes()
+            # client.utils.sync_buffered_reasoner()
+
+            # SAVE AND EXIT
+            client.utils.save_ref_with_inferences("/root/ros_ws/src/topological_map/MY_topological_map.owl")
+
+            i +=1  #increase counter
+```
+
+#### ChooseNextMove(self)  : ####
+This function implements the algorithm with which the robot decides what location to visit next. First it calls the reasoner to reson about the ontology and to updare robot timestamp (this is necessary to see when non visited rooms become urgent), then it querys the ontology to know what are the rooms that robot can reach and what are the currently urgent rooms. After that it starts if/elif/else statement in which: it checks the battery state in order to interrupt this phase in case robot gets low battery, otherwise the robot will:
+	* randomly choose a URGENT reachable room (if any)
+	* else it will randomly choose one of the reachable rooms giving preference to corridors (if any)
+To implement this "simple" algorithm, many steps are actually necessary and are shown here below
+
+```bash
+def ChooseNextMove(self):
+            self.UpdateRobotTimestamp()
+            self.LaunchReasoner()
+
+            reachable_list = []
+            urgents_list = []
+            possible_corridors = []
+            possible_rooms = []
+
+            # ASK FOR REACHABLE ROOMS
+            reachable_list = self.GetReachableRooms()
+            print("Robot can reach ->",reachable_list)
+
+            # ASK FOR EXISTING URGENT ROOMS
+            urgents_list = self.GetUrgentRooms()
+            print('Urgent Rooms ->', urgents_list)
+
+            if(self.is_battery_low()):
+                # if low_nattery occured while deciding, stop the process and pass to recharging state
+                print("### LOW BATTERY WHILE DECIDING NEXT LOCATION ###")
+                return 0
+
+            elif not urgents_list:
+                # else if the are NO URGENT ROOMS, move randomly giving preference to corridors
+                for reachable_room in reachable_list:
+                    if self.IsCorridor(reachable_room):
+                        possible_corridors.append(reachable_room)
+                    else:
+                        possible_rooms.append(reachable_room)
+                if(not possible_corridors):
+                    # if there are NOT reachable corridors, choose a random reachable room
+                    next_room = random.choice(possible_rooms)
+                    print("THERE ARE NO URGENT ROOMS NOR CORRIDOR -> chose ",next_room ,"among -> ", possible_rooms)
+                else:
+                    # if there are reachable corridors choose one of them randomly
+                    next_room = random.choice(possible_corridors)
+                    print("THERE ARE NO URGENT ROOMS -> chose",next_room ," among -> ", possible_corridors)
+                return next_room
+
+            else:
+                # else if the are URGENT ROOMS, check if they are reachable
+                for urgent_room in urgents_list:
+                    if(urgent_room in reachable_list): 
+                        possible_rooms.append(urgent_room)
+                if(possible_rooms):
+                    # if there are reachable urgent rooms choose one of them randomly
+                    next_room = random.choice(possible_rooms)
+                    print("THERE ARE REACHABLE URGENT ROOMS-> chose ",next_room ,"among -> ", possible_rooms)
+                    return next_room
+
+                for reachable_room in reachable_list:
+                    # else give preference to corridors if any
+                    if self.IsCorridor(reachable_room):
+                        possible_corridors.append(reachable_room)
+                    else:
+                        possible_rooms.append(reachable_room)
+                if(not possible_corridors):
+                    # if there are NOT reachable corridors, choose a random reachable room
+                    next_room = random.choice(possible_rooms)
+                    print("THERE ARE NO REACHABLE URGENT ROOMS NOR CORRIDORS,  chose -> ",next_room ,"among -> ", possible_rooms)
+                else:
+                    # if there are reachable corridors choose one of them randomly
+                    next_room = random.choice(possible_corridors) 
+                    print("THERE ARE NO REACHABLE URGENT ROOMS, give preference to CORRIDOS, chose -> ",next_room ,"among -> ", possible_corridors)
+                return next_room
+```
+#### MY_LoadOntology(self)  : ####
+#### MY_LoadOntology(self)  : ####
+#### MY_LoadOntology(self)  : ####
+#### MY_LoadOntology(self)  : ####
+#### MY_LoadOntology(self)  : ####
 
 
 
