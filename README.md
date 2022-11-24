@@ -10,8 +10,7 @@ Table of contents
 * [Dependencies and Setup](#dependencies-and-setup)
 * [Project structure](#project-structure)
 * [Software Components](#software-components)
-* [PseudoCode](#pseudocode)
-* [RT2 Assignment](#rt2-assignment)
+* [Behaviuor Description](#behaviuor-description)
 
 
 ## Introduction
@@ -117,162 +116,11 @@ RIGUARDO FSM.PY MOSTRO LA MSF OTTENUTA
 <img src="https://github.com/claudio-dg/assignment_1/blob/main/images/FSM.png?raw=true" width="400" />
 <p>
 	
- ## Pseudocode
  
- To reproduce the behaviour previously described i wrote 2 C++ programms contained in the ```src``` folder:
- - input_console.cpp
- - controller.cpp 
 
-### Input_console.cpp  : ###
-
-
-```bash
-initialize node
-initialize necessary publishers and subscribers
-Use continuous callback from clock topic
-	
-	print User Interface menu
-	wait for a keyboard input and put it into a variable "input"
-	switch(input)
-	    case 'c':
-	    	publish on move_base/cancel topic to cancel last given goal
-		publish a flag msg on MY_topic_send_goal to reset variables in controller
-		print that goal has been canceled
-		break;
-	    case '1':
-		print autonomous driving introduction
-                ask for goal coordinates
-	    	read goal coordinates from the user
-                publish them on MY_topic_send_goal topic to notify the controller
-		print sent coordinates
-	    	break;
-	    case '2':
-	    	print manual driving introduction
-		print a message to tell the user to look at teleopkeyboard console
-		publish a boolean msg equal to 0 on MY_topic_teleop to inform the controller that manual driving was selected
-		break;           
-	    case '3':
-	    	print ASSISTED manual driving introduction
-		print a message to tell the user to look at teleopkeyboard console
-		publish a boolean msg equal to 1 on MY_topic_teleop to inform the controller that ASSISTED manual driving was selected
-		break;
-	    case 'q':
-		print an exiting message
-		exit the program
-	    default:
-	    	print an error for a wrong command inserted
-	    	break;
-	
-```
-	
-### Controller.cpp  : ###	
-
-```bash
-initialize node
-initialize necessary publishers and subscribers
-print controller console introduction	
-	//the MAIN loops with ros::SpinOnce whilethe program isn't killed
-	//check for global flag values
-	
-	if user asked for manual drive
-		take velocity from teleopKeyboard contained into myRemapped_cmd_vel topic
-		publish it on cmd_vel topic to make the robot move
-	if user asked for ASSISTED manual drive
-		call assistedMovement function**
-	if user didn't ask for these 2 modalities, wait for other callbacks to be called
-	
-	//**assitedMovement function:
-		check distances received from laser sensors
-		if there is an obstacle in front of the robot
-			check for nearest obstacles at his sides
-			if nearest obstacle is at his right
-				turn left a bit
-				print feedback to the user
-			if nearest obstacle is at his left
-				turn right a bit
-				print feedback to the user
-			set flag changedVel to 1 to state that the direction has been modified
-			sleep 0.3 seconds
-		if the direction has been modified
-			stop the robot
-		else
-			clear the console
-			take velocity from teleopKeyboard contained into myRemapped_cmd_vel topic
-			publish it on cmd_vel topic to make the robot move
-	
-//basing on which msg is received from input cosole, different callbacks are executed
-	if 'c' or '1' were inserted in input cosole  "myCallback" is executed
-		
-		reset manual drive global flag value
-		put goal coordinates in a global variable
-		if msg contains flag value for "goal canceled"
-			clear the terminal
-			print that goal has been canceled by user
-			set "canceled" global flag value to 1
-		else
-			reset global flags variables
-			publish goal on  move_base/goal topic
-			print that goal has been published
-	return
-	
-	if '2' or '3' were inserted in input cosole "TeleopCallback" is executed
-		
-		put msg's boolean value in the global flag variable "manualdrive"
-		cancel possibly existing goals
-		reset velocities to 0
-		if msg asked for manual drive
-			print manual driving introduction
-			print a message to tell the user to look at teleopkeyboard console
-		else if msg asked for ASSISTED manual drive
-			print ASSISTED manual driving introduction
-			print a message to tell the user to look at teleopkeyboard console
-	
-//last 2 callbacks (myCmdCallback & CurrentPositionCallback) are called respectively when user inserts command on teleopKeyboard console and when the robot status changes
-	
-	//myCmdCallback
-	put the received vel in a global variable
-	reset changedVel flag each time a new command is inserted
-	
-	
-	//CurrentPositionCallback
-	execute the callback only if goal wasn't reached yet (goal_reached==0)
-	take current position coordinates from /move_base/feedback topic
-	if the status has changed just now (firstTime==1)
-		take current time as Starting time
-		reset firstTime flag value
-	keep updating current time
-	compute elapsed time since the goal was given
-	print info about goal coordinates and time elapsed
-	compute Error between current position and Goal position
-	if error is small enough
-		set goal_reached flag to TRUE
-	if the timeout is over and the goal hasn't been reached
-		cancel the goal 
-		print that goal has been canceled
-	else if  goal has been reached before timeout was over
-		clear console
-		print that goal was reached
-```
-
-
-## RT2 Assignment
+## Behaviuor Description
  
-For this assigment we had to : 
-
-1. Document our code using Doxygen. 
-	The result of this part is contained in the ```Docs``` Folder.
-	 Please clone the repository and open ```index.html``` with a browser to see the documentation page.
-2. create a jupyter notebook to replace the user interface and to show info about the robot through real time plots. 
-	The result of this part is contained in the ```Assignment_notebook.ipyn``` file. Before ruuning the notebook please make sure to run 
-	```bash
-	$ roslaunch final_assignment final.launch
-
-	```
-3. make a statistical analysis on the first assignment of the course.
-	The results of this part are contained in a .pdf file and a matlab script that are sent separately to the professor as attachment to the mail.
-	
-
-	
+QUI SPIEGO QUINDI COSA FA PASSO PASSO IL MIO CODICE MOSTRANDO ANCHE GLI SCREEN DEL TERMINALE PER OGNI STEP	
 
  
  
