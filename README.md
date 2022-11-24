@@ -55,32 +55,30 @@ In order to run correctly the project of this repository, some important depende
 
 In the end, the Finite States Machine here implemented is based on [SMACH](http://wiki.ros.org/smach) libraries.
 	
-When all these are correctly installed, to try this repository it is necessary to: clone this repository in your ROS workspace: 
+When all these are correctly installed, to try this repository it is necessary to: clone it in your ROS workspace: 
 
 ```bash
-$ git clone [https://github.com/claudio-dg/final_assignment.git](https://github.com/claudio-dg/assignment_1.git)
+$ git clone https://github.com/claudio-dg/assignment_1.git
 ```
 
-and then type the following command in the terminal to simultaneously launch all the necessary nodes through the **"launchFile"**:
+then type the following commands in the terminal to make sure to launch the rosmaster as well as the aRMOR service:
 
 ```bash
-$ roslaunch final_assignment final.launch
+$ Roscore &
+$ rosrun armor execute it.emarolab.armor.ARMORMainService
 
 ```
-This Launch File has been made to make it easier to run the project , but if you like you can manually run every part of the project by launching the following launch files:
+Please note that after building the package for the first time it may be required to go to the project directory and run the following command to correctly use aRMOR
 
 ```bash
-$ roslaunch final_assignment move_base.launch
-$ roslaunch final_assignment simulation_gmapping.launch
-
+$ ./gradlew deployApp
 ```
-To run the simulation environment and the move_base functions.
+	
+After that you can type the following command in the terminal to simultaneously launch all the necessary nodes through the [launchFile](https://github.com/claudio-dg/assignment_1/tree/main/launch):
 
 ```bash
-$ roslaunch final_assignment teleop.launch
-$ roslaunch final_assignment my_scripts.launch
+$ roslaunch assignmnent_1 start_simulation.launch
 ```
-To run the teleop_Twist_keyboard node and my scripts produced for this assignment.
 
 ## Gazebo and Rviz Maps
 
