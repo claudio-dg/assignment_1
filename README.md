@@ -109,6 +109,25 @@ This repository contains a ROS package called ```"assignment_1"``` that includes
  
 ## Software Components
 
+Here are shown the details of each software component implemented in this repository and contained in the ```scripts/``` folder.
+### FSM node: ###
+
+This node manages the overall behaviour of the robot by implementing a ```Finite States Machine``` that is made of 4 different states (```LoadOntology```, ```Decide```, ```Surveillance```, ```Recharging```), that are reached through 5 different transitions (```'loaded'```,```'decided'```,```'visited'```,```'low_battery'```,```'recharged'```), as shown in the following graph obtained with ```smach_viewer```.
+
+<p align="center">
+<img src="https://github.com/claudio-dg/assignment_1/blob/main/images/FSM.png?raw=true" width="400" />
+<p>
+Therefore this node doesn
+### Controller node  : ###
+	
+### Planner node  : ###
+	
+### Helper classes  : ###
+	
+### Robot-State node  : ### 
+	credits to arch ma ho leggermente cambiato in particolare eliminando parti non utili alla mia applicazione sttando due range diversi da cui scegliere il tempo necessario a scarica o carica
+	
+	
 spiego come radme del prof in arch_scheleton, i singoli nodi cosa fanno (sub/publish ecc + spiegazione del codice!) 
 	
 RIGUARDO helper.py, dopo l'introduzione generale, spiego solo i metodi chiave in sottocapitoletti, ad esempio 
@@ -120,9 +139,7 @@ chooseNextMove --> implementa algoritmo di scelta (spiego algo: controllo ogni c
 poi boh quelli sulla batteria, poi go to recharging e boh
 	
 RIGUARDO FSM.PY MOSTRO LA MSF OTTENUTA
-<p align="center">
-<img src="https://github.com/claudio-dg/assignment_1/blob/main/images/FSM.png?raw=true" width="400" />
-<p>
+
 	
  
 
