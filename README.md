@@ -280,20 +280,26 @@ class Recharging(smach.State):
 	
 ----------------------
 ### Controller node  : ###
+This node has been taken from [arch_skeleton](https://github.com/buoncubi/arch_skeleton) repository, slightly adapting to the needs of my project, and implements an action server named ```motion/controller```. Here the modifications are mainly represented by some parameters changes, therefore the structure of the node is inviariated, for this reason please consult [arch_skeleton](https://github.com/buoncubi/arch_skeleton) repository for further documentation
 
 ----------------------	
 ### Planner node  : ###
-	
+This node has been taken from [arch_skeleton](https://github.com/buoncubi/arch_skeleton) repository, slightly adapting to the needs of my project, and implements an action server named ```motion/planner```. Here the modifications are mainly represented by some parameters changes, therefore the structure of the node is inviariated, for this reason please consult [arch_skeleton](https://github.com/buoncubi/arch_skeleton) repository for further documentation
 ----------------------
 ### Helper classes  : ###
-	
+As previously said, the script ```helper.py``` contains the implementation of two different helper classes: ```ActionClientHelper``` & ```Helper```. The first one is a class to simplify the implementation of a client for ROS action servers, and has been taken from [arch_skeleton](https://github.com/buoncubi/arch_skeleton) repository in order to implement the planning and controlling action, so please check the linked repository for further documentation.
+The second one instead is an helper class I made to simplify the interaction with the ontology through aRMOR, and therefore to define useful functions to be used in the Finite states machine script (```FSM.py```). Here you can find the definition of the subscriber to ```/state/battery_low``` topic to receive continuous information about the battery state previously named in ```FSM node```, as well as the definition of the```clients``` to ```/motion/planner``` and ```/motion/controller``` Services.
+
+
+
+
+
+
 ----------------------
 ### Robot-State node  : ### 
-credits to arch ma ho leggermente cambiato in particolare eliminando parti non utili alla mia applicazione sttando due range diversi da cui scegliere il tempo necessario a scarica o carica
-	
-	
-spiego come radme del prof in arch_scheleton, i singoli nodi cosa fanno (sub/publish ecc + spiegazione del codice!) 
-	
+This node has been taken from [arch_skeleton](https://github.com/buoncubi/arch_skeleton) repository, slightly adapting to the needs of my project, and implements two ```services``` (i.e., ```state/set_pos```e and ```state/get_pose```) and a ```publisher``` (i.e., ```state/battery_low```) that runs on a separate thread. Here the modifications are mainly represented by some parameters changes related to the battery state, for which i set two different "timers" to set "charging/discharging" time, along with the elimination of some redundant part for my oroject. Therefore the structure of the node is pretty much inviariated, for this reason please consult [arch_skeleton](https://github.com/buoncubi/arch_skeleton) repository for further documentation.
+
+
 RIGUARDO helper.py, dopo l'introduzione generale, spiego solo i metodi chiave in sottocapitoletti, ad esempio --SPIEGO QUELLI CHE VENGONO CHIAMATI IN FSM!!!!!
 	
 "loadOntology...carica onto facendo query ecc ecc NOTA RIPETUTO 3 VOLTE PER BUG e infine la salva in file.
