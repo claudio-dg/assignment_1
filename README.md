@@ -7,7 +7,7 @@ Table of contents
 ----------------------
 
 * [Introduction](#introduction)
-* [Setup and Dependencies](#setup-and-dependencies)
+* [Dependencies and Setup](#dependencies-and-setup)
 * [Gazebo and Rviz Maps](#gazebo-and-rviz-maps)
 * [Project structure and behaviour description](#project-structure-and-behaviour-description)
 * [PseudoCode](#pseudocode)
@@ -40,15 +40,17 @@ behavior is repeated in a infinite loop. When robot’s battery is not low, it s
 - If a reachable room has not been visited for some time, it becomes ```URGENT``` and the robot should visit it.
 3. When the robot’s ```battery is low```, it should go in the E location, and wait for some time before starting again with the above behavior
 
-To define the behaviour of the robot we have to create a Finite States Machine using SMACH libraries
+<!-- To define the behaviour of the robot we have to create a Finite States Machine using SMACH libraries -->
 
 
 
 
 
-## Setup and Dependencies
+##  Dependencies and Setup
 
-This repository Contains all the useful files to run the scripts that i produced for this assignment.
+In order to run correctly the project of this repository, some important dependencies have to be taken into account
+
+In the end, the Finite States Machine here implemented is based on [SMACH](http://wiki.ros.org/smach) libraries.
 To try it, it is sufficient to clone this repository in your ROS workspace: 
 
 ```bash
