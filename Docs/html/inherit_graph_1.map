@@ -1,7 +1,0 @@
-<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" title=" " alt="" coords="5,81,61,108"/>
-<area shape="rect" id="node2" href="$class_f_s_m_1_1_decide.html" title="State &#39;Decide&#39; in which the robot decides which will be the next move ..." alt="" coords="132,5,231,32"/>
-<area shape="rect" id="node3" href="$class_f_s_m_1_1_load_ontology.html" title="Init State &#39;LoadOntology&#39; in which the robot loads the map of the enviroment ..." alt="" coords="109,56,253,83"/>
-<area shape="rect" id="node4" href="$class_f_s_m_1_1_recharging.html" title="State &#39;Recharging&#39; in which the robot moves to Recharging Station and waits for the battery to be ful..." alt="" coords="118,107,245,133"/>
-<area shape="rect" id="node5" href="$class_f_s_m_1_1_surveillance.html" title="State &#39;Surveillance&#39; in which the robot moves to a location and surveys it ..." alt="" coords="114,157,249,184"/>
-</map>
