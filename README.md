@@ -624,6 +624,8 @@ RIGUARDO FSM.PY MOSTRO LA MSF OTTENUTA
  
 QUI SPIEGO QUINDI COSA FA PASSO PASSO IL MIO CODICE MOSTRANDO ANCHE GLI SCREEN DEL TERMINALE PER OGNI STEP	
 
+<img src="https://github.com/claudio-dg/assignment_1/blob/main/images/2022-11-25-10-31-28_Trim.gif?raw=true" width="385px" align="center">
+ 
  
  ## Limitations and Possible Improvements
  
