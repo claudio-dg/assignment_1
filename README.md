@@ -29,7 +29,7 @@ The 2D environment has to be produced making use of Armor_api to create an ontol
 -->
 Within this environment, the robot should:
 
-1. start in the E location and waits until it receives the information to build the 
+1. start in the E location and wait until it receives the information to build the 
 ```topological map```, i.e. the relations between C1, C2, R1, R2, R3 locations and the doors D1...D6.
 2. move in a new location, and should wait for some time before visiting another location. This 
 behavior is repeated in a infinite loop. When robot’s battery is not low, it should move among locations with this ```policy```:
