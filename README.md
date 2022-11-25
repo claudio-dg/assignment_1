@@ -4,7 +4,7 @@ This repository contains the work for the first assignment of Experimental Robot
 
 #### Author: Claudio Del Gaizo, S4696649
 
-- mail: cdg9914@gmail.com
+#### mail: cdg9914@gmail.com
 
 
 Table of contents
