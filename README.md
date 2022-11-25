@@ -513,15 +513,10 @@ def SimulateMotionTime(self, plan, check_battery):
              rospy.sleep(1)
 ```
 
-#### MoveToNext(self, new_position):  : ####
+#### MoveToNext(self, new_position): ####
 This is a simple function that manipulates the ontology to actually move the robot to a new location 
 ```bash
-```
-
-#### Survey(self): ####
-```bash
-def MoveToNext(self, new_position):
-            self.UpdateRobotTimestamp()
+self.UpdateRobotTimestamp()
             self.LaunchReasoner()
 
             # ASK FOR CURRENT ROBOT POSITION
@@ -531,8 +526,78 @@ def MoveToNext(self, new_position):
             print("ROBOT MOVED FROM ", current_room, " TO  ---> " , new_position)
 ```
 
-#### GoToRechargingStation(self): ####
+#### Survey(self): ####
+This function implements the algorithm of surveillance for which the robot stays in location room for 4 seconds if it is a ROOM, otherwise (if it is a corridor) it does not survey. In addition to that, here again the battery state is cchecked at each time to make sure it does not get low during this phase, if so, the surveillance is interrupted.
 ```bash
+def Survey(self):
+            self.UpdateRobotTimestamp()
+            self.LaunchReasoner()
+            survey_time = 0
+
+            # ASK FOR CURRENT ROBOT POSITION
+            current_room = self.GetCurrentRoom()
+
+            while(survey_time<=3):
+                battery_state = self.is_battery_low()
+                if(battery_state):
+                    # if battery low occured
+                    print("### LOW BATTERY WHILE DOING SURVEILLANCE ###")
+                    print("stop survey and go to recharging...")
+                    # return flag value for the FSM to indicate low_battery
+                    return 0
+                if(not self.IsCorridor(current_room)):
+                    # if robot is in a room, survey for 4 sec
+                    survey_time +=1
+                    rospy.sleep(1)
+                    print("Robot has been in the room for ",survey_time, "seconds", end ='\r')
+                else:
+                    # if robot is in a corridor, don't survey
+                    print("Robot is in a corridor, will not survey...")
+                    return 1
+            print("I have surveilled the room for ",survey_time, "seconds")
+            return 1
+```
+
+#### GoToRechargingStation(self): ####
+This is a function to implement the algorithm to reach Recharging station taking into account the current position of the robot. Therefore here the robot checks if it can directly reach Location 'E', if so it moves towards it, otherwise he moves to corridors until he manages to see 'E' Location as ```reachable```. Note that here again the planning algorithm and Simulated Motion Time are again taken into account. 
+```bash
+def GoToRechargingStation(self):
+
+        recharging_station = 'E'
+        reached = 0
+        check_battery = 0
+        while (reached == 0):
+            self.UpdateRobotTimestamp()
+            self.LaunchReasoner()
+            # ASK FOR CURRENT ROBOT POSITION
+            current_room = self.GetCurrentRoom()
+            print("ROBOT IS IN ->",current_room," WITH LOW BATTERY")
+            # ASK FOR REACHABLE ROOMS
+            reachable_list = self.GetReachableRooms()
+            # SEE IF ROBOT CAN REACH REACHARGING STATION
+            if(recharging_station in reachable_list):
+                print("++ Robot can reach Recharging Station ROOM from here ++")
+                print("Plan a path...")
+                path_planned = self.PlanToNext(check_battery)
+                print("move along plan...")
+                self.SimulateMotionTime(path_planned,check_battery)
+                self.MoveToNext(recharging_station)
+                reached = 1
+                print("### Recharging Station reached, START RECHARGING ### ")
+                return reached
+            # OTHERWISE MOVE TO A CORRIDOR AND TRY AGAIN
+            else:
+                print("-- Robot can NOT reach Recharging Station ROOM from here --")
+                print("First Move to a Corridor")
+                print("Plan a path...")
+                path_planned = self.PlanToNext(check_battery)
+
+                print("move along plan...")
+                self.SimulateMotionTime(path_planned,check_battery)
+
+                for reachable_room in reachable_list:
+                    if self.IsCorridor(reachable_room):
+                        self.MoveToNext(reachable_room)
 ```
 
 
