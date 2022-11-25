@@ -386,7 +386,7 @@ def MY_LoadOntology(self):
 This function implements the algorithm with which the robot decides what location to visit next. First it calls the reasoner to reson about the ontology and to updare robot timestamp (this is necessary to see when non visited rooms become urgent), then it querys the ontology to know what are the rooms that robot can reach and what are the currently urgent rooms. After that it starts if/elif/else statement in which: it checks the battery state in order to interrupt this phase in case robot gets low battery, otherwise the robot will:
 	* randomly choose a URGENT reachable room (if any)
 	* else it will randomly choose one of the reachable rooms giving preference to corridors (if any)
-To implement this "simple" algorithm, many steps are actually necessary and are shown here below
+To implement this "simple" algorithm, many steps are actually necessary, and they are shown here below:
 
 ```bash
 def ChooseNextMove(self):
@@ -455,11 +455,85 @@ def ChooseNextMove(self):
                     print("THERE ARE NO REACHABLE URGENT ROOMS, give preference to CORRIDOS, chose -> ",next_room ,"among -> ", possible_corridors)
                 return next_room
 ```
+
+
 #### PlanToNext(self, check_battery): ####
+This is a function to plan a path of waypoints to reach a random goal,by simply invoking the ```planner``` action server, and continuously checking that the battery does not get low during this phase. 
+
+```bash
+def PlanToNext(self, check_battery):
+        environment_size = [3,3]
+        goal = PlanGoal()
+        goal.target = Point(x=random.uniform(0, environment_size[0]),
+                            y=random.uniform(0, environment_size[1]))
+        #cancel previous existing request if any
+        if(self.planner_client.is_running()):
+            self.planner_client.cancel_goals()
+        # Invoke the planner action server.
+        self.planner_client.send_goal(goal)
+        print("SIMULATE PLANNING A PATH TO REACH POSITION")
+        # Wait for the action server computation and listen possible incoming stimulus about battery
+        while not self.planner_client.is_done(): #Until planning has not finished
+            # check the battery state
+            if(self.is_battery_low() and check_battery == 1): # check_battery == 0 means robot has to go back to rech station
+                print("### LOW BATTERY WHILE PLANNING THE PATH ###")
+                return 0
+            else: # if battery is not low OR robot is going back to rech stat, just plan a path
+                print("---- Doing Path Planning ---")
+                rospy.sleep(1)
+        path_planned = self.planner_client.get_results().via_points
+        return path_planned
+```
+
+
 #### SimulateMotionTime(self, plan, check_battery): ####
+This function simulats travelling time to reach a goal through a given plan of waypoints, by invoking the ```controller``` action server and continuously checking that the battery does not get low during this phase. 
+```bash
+def SimulateMotionTime(self, plan, check_battery):
+         # Start the action server for moving the robot through the planned via-points.
+         goal = ControlGoal(via_points=plan)
+         #cancel previous existing request if any
+         if(self.controller_client.is_running()):
+             self.controller_client.cancel_goals()
+         self.controller_client.send_goal(goal)
+         print('Following the planned path to reach the goal...')
+         motion_completed = False
+         while not rospy.is_shutdown():
+             # If the battery is low, then cancel the control action server and take the `battery_low` transition.
+             if(self.is_battery_low() and check_battery == 1): # check_battery == 0 means robot has to go back to rech station
+                 print("### LOW BATTERY WHILE MOVING ALONG THE PLANNED PATH ###")
+                 return motion_completed
+             # If the controller finishes its computation,.
+             if self.controller_client.is_done():
+                 motion_completed = True
+                 print(" MOTION COMPLETED ALONG THE PLANNED  PATH")
+                 return motion_completed
+             # Wait for a reasonably small amount of time to allow `self._helper` processing stimulus (eventually).
+             print(" ***** Moving along the planned path to reach goal... *****")
+             rospy.sleep(1)
+```
+
 #### MoveToNext(self, new_position):  : ####
+This is a simple function that manipulates the ontology to actually move the robot to a new location 
+```bash
+```
+
 #### Survey(self): ####
+```bash
+def MoveToNext(self, new_position):
+            self.UpdateRobotTimestamp()
+            self.LaunchReasoner()
+
+            # ASK FOR CURRENT ROBOT POSITION
+            current_room = self.GetCurrentRoom()
+            # MOVE ROBOT TO NEW LOCATION
+            client.manipulation.replace_objectprop_b2_ind('isIn', 'Robot1', new_position,current_room)
+            print("ROBOT MOVED FROM ", current_room, " TO  ---> " , new_position)
+```
+
 #### GoToRechargingStation(self): ####
+```bash
+```
 
 
 
