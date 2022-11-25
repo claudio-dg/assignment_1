@@ -615,8 +615,9 @@ This node has been taken from [arch_skeleton](https://github.com/buoncubi/arch_s
  
 QUI SPIEGO QUINDI COSA FA PASSO PASSO IL MIO CODICE MOSTRANDO ANCHE GLI SCREEN DEL TERMINALE PER OGNI STEP	
 
-<img src="https://github.com/claudio-dg/assignment_1/blob/main/images/example.gif?raw=true" width="750px" align="center">
- 
+<p align="center">
+<img src="https://github.com/claudio-dg/assignment_1/blob/main/images/example.gif?raw=true" width="800px" align="center">
+<p>
  
  ## Limitations and Possible Improvements
  
