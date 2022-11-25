@@ -613,12 +613,19 @@ This node has been taken from [arch_skeleton](https://github.com/buoncubi/arch_s
 
 ## Behaviuor Presentation
  
-QUI SPIEGO QUINDI COSA FA PASSO PASSO IL MIO CODICE MOSTRANDO ANCHE GLI SCREEN DEL TERMINALE PER OGNI STEP	
+Here below you can find a short video (about 1 min), showing the actual workflow of this project:
 
 <p align="center">
 <img src="https://github.com/claudio-dg/assignment_1/blob/main/images/example.gif?raw=true" width="800px" align="center">
 <p>
  
+* First the **LoadOntology** State is executed loading the ontology and showing some prints
+* Then the FSM moves into **Decide** State, in which it prints useful info such as which are the currently reachable rooms or the urgent ones, it will pick one of them (using the algorithms previously mentioned) and plan a path to reach
+* **Surveillance** state is then executed: the robot simulates the motion time and after soe second, actually moves to the selected location, since it is a corridor it will not survey but will pass immediately to **Decide** state again
+* previous steps is repeated until reaching a urgent ROOM (R3) in which the robot then stays for 4 second before going back to **Decide** state
+* the loop goes on until at a certain point (during "motion simulation" in the specific case of this video) robot gets low battery. At this point it interrupts the Surveillance state to move to the **Recharging** one.
+* Robot therefore moves back until reaching recharging station (i.e 'E' location), where it waits for the battery to be fully charged by calling **Recharging** state multiple times
+* When the battery gets finally high, the robot starts back its behaviour entering in the **Decide** state.
  ## Limitations and Possible Improvements
  
 The main limitations of this project are related to the current implementation of ```Planning``` and ```Controlling``` algorithms. Here in fact, the code written in  [planner.py](https://github.com/claudio-dg/assignment_1/blob/main/scripts/planner.py) and in [controller.py](https://github.com/claudio-dg/assignment_1/blob/main/scripts/controller.py), only allow to ```simulate``` these actions, without actually thinking about how to reach a real room in the environment, but instead simulating the time waste of this planning action along with the one required for actually moving along the planned path. 
