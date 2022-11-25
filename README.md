@@ -613,16 +613,16 @@ This node has been taken from [arch_skeleton](https://github.com/buoncubi/arch_s
 
 ## Behaviuor Presentation
  
-Here below you can find a short video (about 1 min), showing the actual workflow of this project:
+Here below you can find a short video (about 1 min), showing the actual workflow of this project, along with a brief text explanation of what is shown in order to fully understand what happens:
 
 <p align="center">
 <img src="https://github.com/claudio-dg/assignment_1/blob/main/images/example.gif?raw=true" width="800px" align="center">
 <p>
  
-* First the **LoadOntology** State is executed loading the ontology and showing some prints
-* Then the FSM moves into **Decide** State, in which it prints useful info such as which are the currently reachable rooms or the urgent ones, it will pick one of them (using the algorithms previously mentioned) and plan a path to reach
-* **Surveillance** state is then executed: the robot simulates the motion time and after soe second, actually moves to the selected location, since it is a corridor it will not survey but will pass immediately to **Decide** state again
-* previous steps is repeated until reaching a urgent ROOM (R3) in which the robot then stays for 4 second before going back to **Decide** state
+* First the **LoadOntology** State is executed loading the ontology and showing some prints.
+* Then the FSM moves into **Decide** State, in which it prints useful info such as which are the currently reachable rooms or the urgent ones, the robot picks one of them (using the algorithms previously mentioned) and plans a path of a randome number of waypoints.
+* **Surveillance** state is then executed: the robot simulates the motion time and after some seconds, actually moves to the selected location, since it is a corridor it will not survey but will pass immediately to **Decide** state again.
+* previous steps is repeated until reaching a urgent ROOM (R3) in which the robot then stays for 4 second before going back to **Decide** state.
 * the loop goes on until at a certain point (during "motion simulation" in the specific case of this video) robot gets low battery. At this point it interrupts the Surveillance state to move to the **Recharging** one.
 * Robot therefore moves back until reaching recharging station (i.e 'E' location), where it waits for the battery to be fully charged by calling **Recharging** state multiple times
 * When the battery gets finally high, the robot starts back its behaviour entering in the **Decide** state.
