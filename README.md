@@ -607,15 +607,6 @@ def GoToRechargingStation(self):
 This node has been taken from [arch_skeleton](https://github.com/buoncubi/arch_skeleton) repository, slightly adapting to the needs of my project, and implements two ```services``` (i.e., ```state/set_pos```e and ```state/get_pose```) and a ```publisher``` (i.e., ```state/battery_low```) that runs on a separate thread. Here the modifications are mainly represented by some parameters changes related to the battery state, for which i set two different "timers" to set "charging/discharging" time, along with the elimination of some redundant part for my oroject. Therefore the structure of the node is pretty much inviariated, for this reason please consult [arch_skeleton](https://github.com/buoncubi/arch_skeleton) repository for further documentation.
 
 
-RIGUARDO helper.py, dopo l'introduzione generale, spiego solo i metodi chiave in sottocapitoletti, ad esempio --SPIEGO QUELLI CHE VENGONO CHIAMATI IN FSM!!!!!
-	
-"loadOntology...carica onto facendo query ecc ecc NOTA RIPETUTO 3 VOLTE PER BUG e infine la salva in file.
-	
-chooseNextMove --> implementa algoritmo di scelta (spiego algo: controllo ogni colta batteria, se non e scarica controllo urg ecc ecc)
-
-poi boh quelli sulla batteria, poi go to recharging e boh
-	
-RIGUARDO FSM.PY MOSTRO LA MSF OTTENUTA
 
 	
  
@@ -624,7 +615,7 @@ RIGUARDO FSM.PY MOSTRO LA MSF OTTENUTA
  
 QUI SPIEGO QUINDI COSA FA PASSO PASSO IL MIO CODICE MOSTRANDO ANCHE GLI SCREEN DEL TERMINALE PER OGNI STEP	
 
-<img src="https://github.com/claudio-dg/assignment_1/blob/main/images/2022-11-25-10-31-28_Trim.gif?raw=true" width="385px" align="center">
+<img src="https://github.com/claudio-dg/assignment_1/blob/main/images/example.gif?raw=true" width="385px" align="center">
  
  
  ## Limitations and Possible Improvements
