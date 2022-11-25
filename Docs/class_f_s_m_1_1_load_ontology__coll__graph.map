@@ -1,0 +1,4 @@
+<map id="FSM.LoadOntology" name="FSM.LoadOntology">
+<area shape="rect" id="node1" title="Init State &#39;LoadOntology&#39; in which the robot loads the map of the enviroment ..." alt="" coords="5,80,149,107"/>
+<area shape="rect" id="node2" title=" " alt="" coords="49,5,105,32"/>
+</map>

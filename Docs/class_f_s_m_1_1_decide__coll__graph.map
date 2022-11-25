@@ -1,0 +1,4 @@
+<map id="FSM.Decide" name="FSM.Decide">
+<area shape="rect" id="node1" title="State &#39;Decide&#39; in which the robot decides which will be the next move ..." alt="" coords="5,80,104,107"/>
+<area shape="rect" id="node2" title=" " alt="" coords="27,5,83,32"/>
+</map>
