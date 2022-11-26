@@ -13,7 +13,7 @@ Table of contents
 * [Introduction](#introduction)
 * [Dependencies and Setup](#dependencies-and-setup)
 * [Project structure](#project-structure)
-* [Software Components](#software-components)
+* [Software Components and code description](#software-components-and-code-description)
 * [Behaviuor Presentation](#behaviuor-presentation)
 * [Limitations and Possible Improvements](#limitations-and-possible-improvements)
 
@@ -111,8 +111,8 @@ This repository contains a ROS package called ```"assignment_1"``` that includes
 	* [start_simulation.launch](https://github.com/claudio-dg/assignment_1/blob/main/launch/start_simulation.launch): launch file of the project
 	
  
-## Software Components
-
+## Software Components and code description
+	
 Here are shown the details of each software component implemented in this repository and contained in the ```scripts/``` folder.
 
 ### FSM node: ###
