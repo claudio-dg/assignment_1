@@ -1,6 +1,6 @@
 Experimental Robotics Lab first assignment
 ================================
-This repository contains the work for the first assignment of Experimental Robotics Laboratory
+This branch of the repository contains the work for the first assignment of Experimental Robotics Laboratory, with the changes applied for the second part of the assignment, in order to apply the project to a real robot in a simulated environment.
 
 #### Author: Claudio Del Gaizo, S4696649
 
