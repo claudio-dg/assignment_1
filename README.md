@@ -229,7 +229,7 @@ class Decide(smach.State):
 ```
 #### Surveillance State: ####
 
-In this state the robot simulates time waste to reach the goal through the waypoints planned in ```Decide state```, calling helper's function  ```SimulateMotionTime```, then it actually moves to the next room (again received from ```Decide state```) calling helpers'function ```MoveToNext``` which manipulates the ontology. After that it applies the surveillance algorithm of the new room by calling helper's function ```Survey```. In the end it returns ```'low_battery'``` transition if battery gets low during these phases, (to move to ```Recharging``` state), otherwise returns ```'visited'``` transition to move back to ```'Decide'``` state.
+In this state the robot moves to reach the goal through the waypoints planned in ```Decide state```, calling helper's function  ```MoveRobot```, then it updates its position in the ontology calling helpers'function ```UpdateRobotPosition``` which manipulates the ontology. After that it applies the surveillance algorithm of the new room by calling helper's function ```Survey```. In the end it returns ```'low_battery'``` transition if battery gets low during these phases, (to move to ```Recharging``` state), otherwise returns ```'visited'``` transition to move back to ```'Decide'``` state.
 
 ```bash
 class Surveillance(smach.State):
@@ -247,14 +247,14 @@ class Surveillance(smach.State):
         global path_planned
 
         # SIMULATE GOAL REACHING WITH CONTROLLER
-        motion_completed = self._helper.SimulateMotionTime(path_planned,self.check_battery)
+        motion_completed = self._helper.MoveRobot(path_planned,self.check_battery)
 
         if(motion_completed == 0):
             # low battery occured
             return 'low_battery'
         else:
             # plan followed successfully
-            self._helper.MoveToNext(chosen_location)
+            self._helper.UpdateRobotPosition(chosen_location)
             # SURVEY LOCATION
             visited = self._helper.Survey()
             if(visited == 0):
@@ -319,97 +319,130 @@ class Recharging(smach.State):
 	
 ----------------------
 ### Controller node  : ###
-This node has been taken from [arch_skeleton](https://github.com/buoncubi/arch_skeleton) repository, slightly adapting to the needs of my project, and implements an action server named ```motion/controller```. Here the modifications are mainly represented by some parameters changes, therefore the structure of the node is inviariated, for this reason please consult [arch_skeleton](https://github.com/buoncubi/arch_skeleton) repository for further documentation
+#### MODIFIED FOR ASSIGNMENT 2 ####
+This node has been taken from [arch_skeleton](https://github.com/buoncubi/arch_skeleton) repository, adapting to the needs of my project, and implements an action server named ```motion/controller```. In particular i've added the client for ```/move_base``` Action Service to actually move a real robot to a specified target (received by the planner), and two functions to call such Action sending the target (```_reach_pose_client()```) or an empty goal (```MY_CancGoal()```) to stop the robot. In addition to that I added the ```DoneCallback()``` definition for ```move_base``` to allow canceling correctly the goal of move_base in case  the ```controller``` receives a cancel request.
+Here you can find the core of the code, but for further details about the previoulsy named functions please give a look at [controller.py](https://github.com/claudio-dg/assignment_1/blob/second_assignment_changes/scripts/controller.py).
+	
+ ```bash
+
+class ControllingAction(object):
+
+    def __init__(self):
+        self.isActive = 0
+        # Initalise action client for move_base
+        self.move_base_client = actionlib.SimpleActionClient('/move_base', MoveBaseAction)
+        self._as = SimpleActionServer(anm.ACTION_CONTROLLER,
+                                      arch_skeleton.msg.ControlAction,
+                                      execute_cb=self.execute_callback,
+                                      auto_start=False)
+        self._as.start()
+    def execute_callback(self, goal):
+        if goal is None or goal.via_points is None or len(goal.via_points) == 0:
+            rospy.logerr(anm.tag_log('No via points provided! This service will be aborted!', LOG_TAG))
+            self._as.set_aborted()
+            return
+
+        feedback = ControlFeedback()
+        rospy.loginfo(anm.tag_log('Server is controlling...', LOG_TAG))
+        target = 0 #boolean to only send the target instead of both starting point and target
+        for point in goal.via_points:
+            if self._as.is_preempt_requested():
+                rospy.loginfo(anm.tag_log('Service has been cancelled by the client!', LOG_TAG))
+                self._as.set_preempted()
+                return
+
+            if(target): #only send the target goal
+                self._reach_pose_client(point) 
+                while (self.isActive and not rospy.is_shutdown()):
+                     if self._as.is_preempt_requested():
+                         rospy.loginfo(anm.tag_log('*********  Service has been cancelled by the client! *********', LOG_TAG))
+                         # Actually cancel this service.
+                         self._as.set_preempted()
+                         self.move_base_client.cancel_all_goals() 
+                         self.isActive = 0 
+                         return
+
+                     rospy.loginfo(anm.tag_log('wating until goal is reached OR CANCELLED...', LOG_TAG))
+                     rospy.sleep(1)
+            else:
+                target += 1
+                rospy.loginfo(anm.tag_log('AVOID SENDING CURRENT POSITION AS NEW GOAL', LOG_TAG))
+
+
+            feedback.reached_point = point
+            self._as.publish_feedback(feedback)
+
+
+        # Publish the results to the client.
+        result = ControlResult()
+        result.reached_point = feedback.reached_point
+        rospy.loginfo(anm.tag_log('Motion control successes.', LOG_TAG))
+        print('result', result)
+        self._as.set_succeeded(result)
+        return  # Succeeded.
+
+ ```
+	
 
 ----------------------	
 ### Planner node  : ###
 This node has been taken from [arch_skeleton](https://github.com/buoncubi/arch_skeleton) repository, slightly adapting to the needs of my project, and implements an action server named ```motion/planner```. Here the modifications are mainly represented by some parameters changes, therefore the structure of the node is inviariated, for this reason please consult [arch_skeleton](https://github.com/buoncubi/arch_skeleton) repository for further documentation
 
+#### MODIFIED FOR ASSIGNMENT 2 ####
+This node has only been slighlty modified with respect to the first version: now it does not waste time anymore to simulate path planning because it is not a "dummy" implementation, and instead of a plan composed by a random set of points, it returns a path plan containing the starting position of the robot and the goal to reach.
+
 
 ----------------------
 ### Helper classes  : ###
+#### MODIFIED FOR ASSIGNMENT 2 ####
 As previously said, the script ```helper.py``` contains the implementation of two different helper classes: ```ActionClientHelper``` & ```Helper```. The first one is a class to simplify the implementation of a client for ROS action servers, and has been taken from [arch_skeleton](https://github.com/buoncubi/arch_skeleton) repository in order to implement the planning and controlling action, so please check the linked repository for further documentation.
 
 
 The second one instead is an helper class I made to simplify the interaction with the ontology through aRMOR, and therefore to define useful functions to be used in the Finite states machine script (```FSM.py```). Here you can find the definition of the subscriber to ```/state/battery_low``` topic to receive continuous information about the battery state previously named in ```FSM node```, as well as the definition of the```clients``` to ```/motion/planner``` and ```/motion/controller``` Services.
 
 
-Here follows the code explanation of the main functions of this class, that are the ones that get called directly by ```FSM node```:
+**Here follows the code explanation of the main functions of this class that have been modified/added** with respect to the first version of this project, please find a more detailed description of non-modified functions in the ```Readme.md``` of ```main``` branch or directly in [helper.py](https://github.com/claudio-dg/assignment_1/blob/second_assignment_changes/scripts/helper.py):
 
-#### MY_LoadOntology(self)  : ####
-This function creates the map adding all the locations, doors and required properties to the ontology ```/topological_map.owl``` by using the "manipulation" tool of aRMOR_api client, then saves the result in a new file named ```MY_topological_map.owl```. Please note that here, due to some strange bugs, it has been necessary to have this function repeating the same actions 3 times with a while loop, because the manipulations were not correctly applied in the first 2 iterations, and therefore the reasoner was not able of correctly reasoning about the ontology.
-
+#### MY_LoadOntology(self,room_name, x_value, y_value, doors_linked,connections,last_call)  : ####
+#### MODIFIED FOR ASSIGNMENT 2 ####
+This function has been heavily modified with respect to former implementation.
+Now it creates the map adding all the locations one by one according to the arguments given as inputs, such as room name, center coordinates and so on. It adds the required properties to the ontology ```/topological_map.owl``` by using the "manipulation" tool of aRMOR_api client, then saves the result in a new file named ```MY_topological_map.owl```. 
+Please note that with this implementation it is no more necessary to loop the process three times (as it happened in my first implementation), probably due to the different properties added to the ontology, that allow aRMOR_api to work better, so the previous while loop is now canceled. 
+	
 ```bash
-def MY_LoadOntology(self):
-        i = 1 
-        done_once = 0 # to load timestamps only once
-        while i <=3:
+def MY_LoadOntology(self,room_name, x_value, y_value, doors_linked,connections,last_call): #repeat_doors = 0/1
 
             # ADD ALL OUR AXIOMS
-            if(client.manipulation.add_ind_to_class("R1", "LOCATION") and i == 3): #mettere if per checcare
-                print("Added R1 to LOCATION")
-            if(client.manipulation.add_ind_to_class("R2", "LOCATION") and i == 3):
-                print("Added R2 to LOCATION")
-            if(client.manipulation.add_ind_to_class("R3", "LOCATION")and i == 3):
-                print("Added R3 to LOCATION")
-            if(client.manipulation.add_ind_to_class("R4", "LOCATION")and i == 3):
-                print("Added R4 to LOCATION")
-            if(client.manipulation.add_ind_to_class("C1", "LOCATION")and i == 3):
-                print("Added C1 to LOCATION")
-            if(client.manipulation.add_ind_to_class("C2", "LOCATION")and i == 3):
-                print("Added C2 to LOCATION")
-            if(client.manipulation.add_ind_to_class("E", "LOCATION")and i == 3):
-                print("Added E to LOCATION")
-            if(client.manipulation.add_ind_to_class("D1", "DOOR")and i == 3):
-                print("Added D1 to DOOR")
-            if(client.manipulation.add_ind_to_class("D2", "DOOR")and i == 3):
-                print("Added D2 to DOOR")
-            if(client.manipulation.add_ind_to_class("D3", "DOOR")and i == 3):
-                print("Added D3 to DOOR")
-            if(client.manipulation.add_ind_to_class("D4", "DOOR")and i == 3):
-                print("Added D4 to DOOR")
-            if(client.manipulation.add_ind_to_class("D5", "DOOR")and i == 3):
-                print("Added D5 to DOOR")
-            if(client.manipulation.add_ind_to_class("D6", "DOOR")and i == 3):
-                print("Added D6 to DOOR")
-            if(client.manipulation.add_ind_to_class("D7", "DOOR")and i == 3):
-                print("Added D7 to DOOR")
+            if(client.manipulation.add_ind_to_class(room_name, "LOCATION")): #mettere if per checcare
+                print("Added" + room_name + "to LOCATION")
 
-
-            # DISJOINT OF THE INDIVIDUALS OF THE CLASSES
-            client.manipulation.disj_inds_of_class("LOCATION")
-            client.manipulation.disj_inds_of_class("DOOR")
-
-            # ADD PROPERTIES TO OBJECTS
+            # ADD HASDOOR PROPERTIES and DOOR INDIVUDUALS
             # Distinction between rooms and corridors
-            client.manipulation.add_objectprop_to_ind("hasDoor", "R1", "D1")
-            client.manipulation.add_objectprop_to_ind("hasDoor", "R2", "D2")
-            client.manipulation.add_objectprop_to_ind("hasDoor", "R3", "D3")
-            client.manipulation.add_objectprop_to_ind("hasDoor", "R4", "D4")
-            client.manipulation.add_objectprop_to_ind("hasDoor", "C1", "D1")
-            client.manipulation.add_objectprop_to_ind("hasDoor", "C1", "D2")
-            client.manipulation.add_objectprop_to_ind("hasDoor", "C1", "D5")
-            client.manipulation.add_objectprop_to_ind("hasDoor", "C1", "D7")
-            client.manipulation.add_objectprop_to_ind("hasDoor", "C2", "D3")
-            client.manipulation.add_objectprop_to_ind("hasDoor", "C2", "D4")
-            client.manipulation.add_objectprop_to_ind("hasDoor", "C2", "D5")
-            client.manipulation.add_objectprop_to_ind("hasDoor", "C2", "D6")
-            client.manipulation.add_objectprop_to_ind("hasDoor", "E", "D6")
-            client.manipulation.add_objectprop_to_ind("hasDoor", "E", "D7")
+            for item in doors_linked:
+                client.manipulation.add_objectprop_to_ind("hasDoor", room_name, item)
+                print("Added" +item+ 'to hasDoor of'  + room_name)
+                client.manipulation.add_ind_to_class(item, "DOOR")
 
+            # ADD CONNECTIONS PROPERTIES
+            for item in connections:
+                client.manipulation.add_objectprop_to_ind("connectedTo", room_name, item)
+                print("Added" +item+ 'to Connections of' + room_name )
 
-                # Distinction between individuals
-            client.call('DISJOINT', 'IND', 'CLASS', ["R1","R2","R3","R4", "C1","C2", "D1", "D2", "D3", "D4", "D5", "D5", "D7"]) #IOOOOOOOOO
+            #ADD center coordinates
+            client.manipulation.add_dataprop_to_ind("X_center",room_name,'Float',str(float(x_value)))
+            client.manipulation.add_dataprop_to_ind("Y_center",room_name,'Float',str(float(y_value)))
 
-                # INITIALIZE ROBOT POSITION
-            client.manipulation.add_objectprop_to_ind("isIn", "Robot1", "E")
-                # ADD timestamps
-            if(done_once == 0):
-                client.manipulation.add_dataprop_to_ind("visitedAt","R1",'Long',str(int(time.time())))
-                client.manipulation.add_dataprop_to_ind("visitedAt","R2",'Long',str(int(time.time())))
-                client.manipulation.add_dataprop_to_ind("visitedAt","R3",'Long',str(int(time.time())))
-                client.manipulation.add_dataprop_to_ind("visitedAt","R4",'Long',str(int(time.time())))
-                done_once = 1
+            # ADD TIMESTAMPS TO ROOMS
+            if(not "C" in room_name and not "E" in room_name): #only add timestamps to rooms not corridors
+            	client.manipulation.add_dataprop_to_ind("visitedAt",room_name,'Long',str(int(time.time())))
+                # done_once = 1
+            if(last_call): #to add this only once
+                client.manipulation.add_objectprop_to_ind("isIn", "Robot1", "E")
+                print("Robot set in E location")
+                # DISJOINT INDIVIDUALS
+                client.manipulation.disj_inds_of_class("LOCATION")
+                client.manipulation.disj_inds_of_class("DOOR")
+
 
             # APPLY CHANGES
             client.utils.apply_buffered_changes()
@@ -417,94 +450,23 @@ def MY_LoadOntology(self):
 
             # SAVE AND EXIT
             client.utils.save_ref_with_inferences("/root/ros_ws/src/topological_map/MY_topological_map.owl")
-
-            i +=1  #increase counter
 ```
 
 #### ChooseNextMove(self)  : ####
-This function implements the algorithm with which the robot decides what location to visit next. First it calls the reasoner to reson about the ontology and to updare robot timestamp (this is necessary to see when non visited rooms become urgent), then it querys the ontology to know what are the rooms that robot can reach and what are the currently urgent rooms. After that it starts if/elif/else statement in which: it checks the battery state in order to interrupt this phase in case robot gets low battery, otherwise the robot will:
-	* randomly choose a URGENT reachable room (if any)
-	* else it will randomly choose one of the reachable rooms giving preference to corridors (if any)
-To implement this "simple" algorithm, many steps are actually necessary, and they are shown here below:
-
-```bash
-def ChooseNextMove(self):
-            self.UpdateRobotTimestamp()
-            self.LaunchReasoner()
-
-            reachable_list = []
-            urgents_list = []
-            possible_corridors = []
-            possible_rooms = []
-
-            # ASK FOR REACHABLE ROOMS
-            reachable_list = self.GetReachableRooms()
-            print("Robot can reach ->",reachable_list)
-
-            # ASK FOR EXISTING URGENT ROOMS
-            urgents_list = self.GetUrgentRooms()
-            print('Urgent Rooms ->', urgents_list)
-
-            if(self.is_battery_low()):
-                # if low_nattery occured while deciding, stop the process and pass to recharging state
-                print("### LOW BATTERY WHILE DECIDING NEXT LOCATION ###")
-                return 0
-
-            elif not urgents_list:
-                # else if the are NO URGENT ROOMS, move randomly giving preference to corridors
-                for reachable_room in reachable_list:
-                    if self.IsCorridor(reachable_room):
-                        possible_corridors.append(reachable_room)
-                    else:
-                        possible_rooms.append(reachable_room)
-                if(not possible_corridors):
-                    # if there are NOT reachable corridors, choose a random reachable room
-                    next_room = random.choice(possible_rooms)
-                    print("THERE ARE NO URGENT ROOMS NOR CORRIDOR -> chose ",next_room ,"among -> ", possible_rooms)
-                else:
-                    # if there are reachable corridors choose one of them randomly
-                    next_room = random.choice(possible_corridors)
-                    print("THERE ARE NO URGENT ROOMS -> chose",next_room ," among -> ", possible_corridors)
-                return next_room
-
-            else:
-                # else if the are URGENT ROOMS, check if they are reachable
-                for urgent_room in urgents_list:
-                    if(urgent_room in reachable_list): 
-                        possible_rooms.append(urgent_room)
-                if(possible_rooms):
-                    # if there are reachable urgent rooms choose one of them randomly
-                    next_room = random.choice(possible_rooms)
-                    print("THERE ARE REACHABLE URGENT ROOMS-> chose ",next_room ,"among -> ", possible_rooms)
-                    return next_room
-
-                for reachable_room in reachable_list:
-                    # else give preference to corridors if any
-                    if self.IsCorridor(reachable_room):
-                        possible_corridors.append(reachable_room)
-                    else:
-                        possible_rooms.append(reachable_room)
-                if(not possible_corridors):
-                    # if there are NOT reachable corridors, choose a random reachable room
-                    next_room = random.choice(possible_rooms)
-                    print("THERE ARE NO REACHABLE URGENT ROOMS NOR CORRIDORS,  chose -> ",next_room ,"among -> ", possible_rooms)
-                else:
-                    # if there are reachable corridors choose one of them randomly
-                    next_room = random.choice(possible_corridors) 
-                    print("THERE ARE NO REACHABLE URGENT ROOMS, give preference to CORRIDOS, chose -> ",next_room ,"among -> ", possible_corridors)
-                return next_room
-```
+Not modified
 
 
 #### PlanToNext(self, check_battery): ####
-This is a function to plan a path of waypoints to reach a random goal,by simply invoking the ```planner``` action server, and continuously checking that the battery does not get low during this phase. 
+#### MODIFIED FOR ASSIGNMENT 2 ####
+This is a function to plan a path of waypoints to reach a **given** **goal**,by simply invoking the ```planner``` action server, and continuously checking that the battery does not get low during this phase. 
+In this version it does not consider envirnoment size but creates a plan of two waypoints: a starting point (i.e the current robot position) and the target point (i.e the center coordinates of the ```target_location``` given as input)
 
 ```bash
-def PlanToNext(self, check_battery):
-        environment_size = [3,3]
+ def PlanToNext(self, check_battery, target_location):
+        room_coordinates = self.GetRoomCoordinates(target_location)
         goal = PlanGoal()
-        goal.target = Point(x=random.uniform(0, environment_size[0]),
-                            y=random.uniform(0, environment_size[1]))
+        goal.target = room_coordinates
+
         #cancel previous existing request if any
         if(self.planner_client.is_running()):
             self.planner_client.cancel_goals()
@@ -525,10 +487,11 @@ def PlanToNext(self, check_battery):
 ```
 
 
-#### SimulateMotionTime(self, plan, check_battery): ####
-This function simulats travelling time to reach a goal through a given plan of waypoints, by invoking the ```controller``` action server and continuously checking that the battery does not get low during this phase. 
+#### MoveRobot(self, plan, check_battery): ####
+#### MODIFIED FOR ASSIGNMENT 2 ####
+This function takes the place of former ```SimulateMotionTime``` function, which simulated travelling time to reach a goal through a given plan of waypoints, by invoking the ```controller``` action server and continuously checking that the battery does not get low during this phase. Now it does not simulate anymore but actually moves the robot by invoking the new version of the ```controller``` already described. Conceptually the remaining functioning is the same as before. 
 ```bash
-def SimulateMotionTime(self, plan, check_battery):
+def MoveRobot(self, plan, check_battery):
          # Start the action server for moving the robot through the planned via-points.
          goal = ControlGoal(via_points=plan)
          #cancel previous existing request if any
@@ -540,7 +503,9 @@ def SimulateMotionTime(self, plan, check_battery):
          while not rospy.is_shutdown():
              # If the battery is low, then cancel the control action server and take the `battery_low` transition.
              if(self.is_battery_low() and check_battery == 1): # check_battery == 0 means robot has to go back to rech station
-                 print("### LOW BATTERY WHILE MOVING ALONG THE PLANNED PATH ###")
+                 print("### LOW BATTERY WHILE MOVING ALONG THE PLANNED PATH, Cancel goal... ###")
+                 # send a cancel_all_goals to 'controller' server of controller.py
+                 self.controller_client.cancel_goals()
                  return motion_completed
              # If the controller finishes its computation,.
              if self.controller_client.is_done():
@@ -552,10 +517,11 @@ def SimulateMotionTime(self, plan, check_battery):
              rospy.sleep(1)
 ```
 
-#### MoveToNext(self, new_position): ####
-This is a simple function that manipulates the ontology to actually move the robot to a new location 
+#### UpdateRobotPosition(self, new_position): ####
+This function is exactly the old ```MoveToNext()```, just renamed for a more immediate understanding of its functioning: it is a simple function that manipulates the ontology to update robot's current location.
 ```bash
-self.UpdateRobotTimestamp()
+def UpdateRobotPosition(self, new_position):
+            self.UpdateRobotTimestamp()
             self.LaunchReasoner()
 
             # ASK FOR CURRENT ROBOT POSITION
@@ -566,39 +532,52 @@ self.UpdateRobotTimestamp()
 ```
 
 #### Survey(self): ####
-This function implements the algorithm of surveillance for which the robot stays in location room for 4 seconds if it is a ROOM, otherwise (if it is a corridor) it does not survey. In addition to that, here again the battery state is cchecked at each time to make sure it does not get low during this phase, if so, the surveillance is interrupted.
+#### MODIFIED FOR ASSIGNMENT 2 ####
+The first version of this function implemented an algorithm of surveillance for which the robot stayed in location room for 4 seconds if it is a ROOM, otherwise (if it is a corridor) it did not survey. In addition to that, here again the battery state is checked at each time to make sure it does not get low during this phase, if so, the surveillance is interrupted.
+
+**The new version of this function** removes the 4 seconds waiting and replaces it with a camera rotation of 360 degrees, done with a client to ```/MY_move_arm``` which calls the service by giving pose number 10, which causes the camera to have the desired rotation.
 ```bash
 def Survey(self):
             self.UpdateRobotTimestamp()
             self.LaunchReasoner()
             survey_time = 0
 
+
             # ASK FOR CURRENT ROBOT POSITION
             current_room = self.GetCurrentRoom()
 
-            while(survey_time<=3):
-                battery_state = self.is_battery_low()
-                if(battery_state):
-                    # if battery low occured
-                    print("### LOW BATTERY WHILE DOING SURVEILLANCE ###")
-                    print("stop survey and go to recharging...")
-                    # return flag value for the FSM to indicate low_battery
-                    return 0
-                if(not self.IsCorridor(current_room)):
-                    # if robot is in a room, survey for 4 sec
-                    survey_time +=1
-                    rospy.sleep(1)
-                    print("Robot has been in the room for ",survey_time, "seconds", end ='\r')
-                else:
-                    # if robot is in a corridor, don't survey
-                    print("Robot is in a corridor, will not survey...")
-                    return 1
-            print("I have surveilled the room for ",survey_time, "seconds")
+            battery_state = self.is_battery_low()
+            if(battery_state):
+                # if battery low occured
+                print("### LOW BATTERY WHILE DOING SURVEILLANCE ###")
+                print("stop survey and go to recharging...")
+                # return flag value for the FSM to indicate low_battery
+                return 0
+            if(not self.IsCorridor(current_room)):
+
+                # ****** if robot is in a room, survey rotating the camera ******
+                print("Survey room by rotating the camera of 360 degrees")
+                # wait for My_move arm server
+                rospy.wait_for_service('/MY_move_arm')
+                # initailise client
+                camera_client = rospy.ServiceProxy('/MY_move_arm', MY_SetPose)
+                # rotate by calling predefined pose = 10
+                camera_client(10)
+                #wait fot camera rotation
+                rospy.sleep(6)
+
+            else:
+                # if robot is in a corridor, don't survey
+                print("Robot is in a corridor, will not survey...")
+                return 1
             return 1
 ```
 
 #### GoToRechargingStation(self): ####
+#### MODIFIED FOR ASSIGNMENT 2 ####
 This is a function to implement the algorithm to reach Recharging station taking into account the current position of the robot. Therefore here the robot checks if it can directly reach Location 'E', if so it moves towards it, otherwise he moves to corridors until he manages to see 'E' Location as ```reachable```. Note that here again the planning algorithm and Simulated Motion Time are again taken into account. 
+
+In the new version i've added the case in which the robot gets low battery while already being in Location 'E' (which can occur with the real simulation of the second assignment) and simply changed the names of the functions called previousòy explained (i.e SimulateMotionTime -> MoveRobot and MoveToNext -> UpdateRobotPosition).
 ```bash
 def GoToRechargingStation(self):
 
@@ -611,16 +590,21 @@ def GoToRechargingStation(self):
             # ASK FOR CURRENT ROBOT POSITION
             current_room = self.GetCurrentRoom()
             print("ROBOT IS IN ->",current_room," WITH LOW BATTERY")
+            if(current_room == recharging_station): ###### MODIFICATO AGGIUNGENDO QUESTO CASO
+                reached = 1
+                print("### ALREADY in Recharging Station, START RECHARGING ### ")
+                return reached
+
             # ASK FOR REACHABLE ROOMS
             reachable_list = self.GetReachableRooms()
             # SEE IF ROBOT CAN REACH REACHARGING STATION
             if(recharging_station in reachable_list):
                 print("++ Robot can reach Recharging Station ROOM from here ++")
                 print("Plan a path...")
-                path_planned = self.PlanToNext(check_battery)
+                path_planned = self.PlanToNext(check_battery,recharging_station)
                 print("move along plan...")
-                self.SimulateMotionTime(path_planned,check_battery)
-                self.MoveToNext(recharging_station)
+                self.MoveRobot(path_planned,check_battery)
+                self.UpdateRobotPosition(recharging_station)
                 reached = 1
                 print("### Recharging Station reached, START RECHARGING ### ")
                 return reached
@@ -628,15 +612,15 @@ def GoToRechargingStation(self):
             else:
                 print("-- Robot can NOT reach Recharging Station ROOM from here --")
                 print("First Move to a Corridor")
-                print("Plan a path...")
-                path_planned = self.PlanToNext(check_battery)
-
-                print("move along plan...")
-                self.SimulateMotionTime(path_planned,check_battery)
 
                 for reachable_room in reachable_list:
                     if self.IsCorridor(reachable_room):
-                        self.MoveToNext(reachable_room)
+                        print("Plan a path...")
+                        path_planned = self.PlanToNext(check_battery,reachable_room)
+                        print("move along plan...")
+                        self.MoveRobot(path_planned,check_battery)
+
+                        self.UpdateRobotPosition(reachable_room)
 ```
 
 
