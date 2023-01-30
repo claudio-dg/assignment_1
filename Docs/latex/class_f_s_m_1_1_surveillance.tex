@@ -1,0 +1,92 @@
+\hypertarget{class_f_s_m_1_1_surveillance}{}\doxysection{F\+S\+M.\+Surveillance Class Reference}
+\label{class_f_s_m_1_1_surveillance}\index{FSM.Surveillance@{FSM.Surveillance}}
+
+
+State \textquotesingle{}\mbox{\hyperlink{class_f_s_m_1_1_surveillance}{Surveillance}}\textquotesingle{} in which the robot moves to a location and surveys it ...  
+
+
+
+
+Inheritance diagram for F\+S\+M.\+Surveillance\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=181pt]{class_f_s_m_1_1_surveillance__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for F\+S\+M.\+Surveillance\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=181pt]{class_f_s_m_1_1_surveillance__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \mbox{\hyperlink{class_f_s_m_1_1_surveillance_a018ff814bff104cc55db7fb5781ed32a}{\+\_\+\+\_\+init\+\_\+\+\_\+}} (self, my\+\_\+helper)
+\begin{DoxyCompactList}\small\item\em called on initialisation ... \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_f_s_m_1_1_surveillance_a2e35c4f3ef7af1b4a704d16544785f10}\label{class_f_s_m_1_1_surveillance_a2e35c4f3ef7af1b4a704d16544785f10}} 
+def {\bfseries execute} (self, userdata)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_f_s_m_1_1_surveillance_a3857bd533dd5738c457beebb62b0390c}\label{class_f_s_m_1_1_surveillance_a3857bd533dd5738c457beebb62b0390c}} 
+{\bfseries check\+\_\+battery}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+State \textquotesingle{}\mbox{\hyperlink{class_f_s_m_1_1_surveillance}{Surveillance}}\textquotesingle{} in which the robot moves to a location and surveys it ... 
+
+\hypertarget{class_f_s_m_1_1_surveillance_autotoc_md5}{}\doxysubsubsection{Attributes}\label{class_f_s_m_1_1_surveillance_autotoc_md5}
+{\bfseries{helper}} \+: Helper
+
+an object of class Helper contained in \mbox{\hyperlink{helper_8py}{helper.\+py}} to use its functions
+
+{\bfseries{check\+\_\+battery}} \+: boolean
+
+flag to state wether to check the battery state or not (1=yes 0=NO)\hypertarget{class_f_s_m_1_1_surveillance_autotoc_md6}{}\doxysubsubsection{Methods}\label{class_f_s_m_1_1_surveillance_autotoc_md6}
+{\bfseries{init}}(self)\+:
+
+initialise class
+
+{\bfseries{execute}}(self, userdata)\+:
+
+called on execution, moves to next room calling helpers\textquotesingle{}function simulating time waste to reach such goal, then returns \textquotesingle{}low\+\_\+battery\textquotesingle{} transition if battery gets low during this phase, otherwise returns \textquotesingle{}visited\textquotesingle{} transition to move to \textquotesingle{}\mbox{\hyperlink{class_f_s_m_1_1_decide}{Decide}}\textquotesingle{} state
+
+define state \mbox{\hyperlink{class_f_s_m_1_1_surveillance}{Surveillance}} 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_f_s_m_1_1_surveillance_a018ff814bff104cc55db7fb5781ed32a}\label{class_f_s_m_1_1_surveillance_a018ff814bff104cc55db7fb5781ed32a}} 
+\index{FSM.Surveillance@{FSM.Surveillance}!\_\_init\_\_@{\_\_init\_\_}}
+\index{\_\_init\_\_@{\_\_init\_\_}!FSM.Surveillance@{FSM.Surveillance}}
+\doxysubsubsection{\texorpdfstring{\_\_init\_\_()}{\_\_init\_\_()}}
+{\footnotesize\ttfamily def F\+S\+M.\+Surveillance.\+\_\+\+\_\+init\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{my\+\_\+helper }\end{DoxyParamCaption})}
+
+
+
+called on initialisation ... 
+
+\hypertarget{class_f_s_m_1_1_surveillance_autotoc_md13}{}\doxysubsubsection{Parameters}\label{class_f_s_m_1_1_surveillance_autotoc_md13}
+{\bfseries{helper}} \+: Helper
+
+an object of class Helper contained in \mbox{\hyperlink{helper_8py}{helper.\+py}} to use its functions
+
+{\bfseries{check\+\_\+battery}} \+: boolean
+
+flag to state wether to check the battery state or not (1=yes 0=NO) called on execution, moves to next room calling helpers\textquotesingle{}functions simulating time waste to reach such goal. After that it applies survey algorithm calling \textquotesingle{}Survey\textquotesingle{} function. then it returns \textquotesingle{}low\+\_\+battery\textquotesingle{} transition if battery gets low during these phases, otherwise returns \textquotesingle{}visited\textquotesingle{} transition to move to \textquotesingle{}\mbox{\hyperlink{class_f_s_m_1_1_decide}{Decide}}\textquotesingle{} state ... \hypertarget{class_f_s_m_1_1_surveillance_autotoc_md14}{}\doxysubsubsection{Parameters}\label{class_f_s_m_1_1_surveillance_autotoc_md14}
+{\bfseries{chosen\+\_\+location}} \+: str
+
+location decided by \textquotesingle{}\mbox{\hyperlink{class_f_s_m_1_1_decide}{Decide}}\textquotesingle{} state
+
+{\bfseries{path\+\_\+planned}} \+: Plan\+Goal
+
+path plan computed by \textquotesingle{}\mbox{\hyperlink{class_f_s_m_1_1_decide}{Decide}}\textquotesingle{} state 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+scripts/\mbox{\hyperlink{_f_s_m_8py}{F\+S\+M.\+py}}\end{DoxyCompactItemize}

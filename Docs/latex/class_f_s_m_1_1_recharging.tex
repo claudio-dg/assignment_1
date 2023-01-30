@@ -1,0 +1,119 @@
+\hypertarget{class_f_s_m_1_1_recharging}{}\doxysection{F\+S\+M.\+Recharging Class Reference}
+\label{class_f_s_m_1_1_recharging}\index{FSM.Recharging@{FSM.Recharging}}
+
+
+State \textquotesingle{}\mbox{\hyperlink{class_f_s_m_1_1_recharging}{Recharging}}\textquotesingle{} in which the robot moves to \mbox{\hyperlink{class_f_s_m_1_1_recharging}{Recharging}} Station and waits for the battery to be fully charged ...  
+
+
+
+
+Inheritance diagram for F\+S\+M.\+Recharging\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=175pt]{class_f_s_m_1_1_recharging__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for F\+S\+M.\+Recharging\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=175pt]{class_f_s_m_1_1_recharging__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \mbox{\hyperlink{class_f_s_m_1_1_recharging_ad7616d2d054fdb6cad503826fdbfba4b}{\+\_\+\+\_\+init\+\_\+\+\_\+}} (self, my\+\_\+helper)
+\begin{DoxyCompactList}\small\item\em called on initialisation ... \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{class_f_s_m_1_1_recharging_a4b1f2c3d76bab684e8b9f1c492610649}{execute}} (self, userdata)
+\begin{DoxyCompactList}\small\item\em called on execution, moves to \mbox{\hyperlink{class_f_s_m_1_1_recharging}{Recharging}} Station calling helpers\textquotesingle{} function, then waits for the battery to be fully charged. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_f_s_m_1_1_recharging_a697af2be0a6207670fc4efda1a845fd3}\label{class_f_s_m_1_1_recharging_a697af2be0a6207670fc4efda1a845fd3}} 
+{\bfseries time}
+\item 
+\mbox{\Hypertarget{class_f_s_m_1_1_recharging_a2d32bf980a83f8ca60a2f692369a7d57}\label{class_f_s_m_1_1_recharging_a2d32bf980a83f8ca60a2f692369a7d57}} 
+{\bfseries station\+\_\+reached}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+State \textquotesingle{}\mbox{\hyperlink{class_f_s_m_1_1_recharging}{Recharging}}\textquotesingle{} in which the robot moves to \mbox{\hyperlink{class_f_s_m_1_1_recharging}{Recharging}} Station and waits for the battery to be fully charged ... 
+
+\hypertarget{class_f_s_m_1_1_recharging_autotoc_md7}{}\doxysubsubsection{Attributes}\label{class_f_s_m_1_1_recharging_autotoc_md7}
+{\bfseries{helper}} \+: Helper
+
+an object of class Helper contained in \mbox{\hyperlink{helper_8py}{helper.\+py}} to use its functions
+
+{\bfseries{time}} \+: int
+
+counter to know time required for recharging
+
+{\bfseries{station\+\_\+reached}} \+: boolean
+
+flag to state if robot reached \mbox{\hyperlink{class_f_s_m_1_1_recharging}{Recharging}} station or not (1=yes 0=NO)\hypertarget{class_f_s_m_1_1_recharging_autotoc_md8}{}\doxysubsubsection{Methods}\label{class_f_s_m_1_1_recharging_autotoc_md8}
+{\bfseries{init}}(self)\+:
+
+initialise class
+
+{\bfseries{execute}}(self, userdata)\+:
+
+called on execution, moves to \mbox{\hyperlink{class_f_s_m_1_1_recharging}{Recharging}} Station calling helpers\textquotesingle{} function, then waits for the battery to be fully charged. The wait is implemented through repetitive calls of the \textquotesingle{}low\+\_\+battery\textquotesingle{} transitions. When battery is charged, returns \textquotesingle{}recharged\textquotesingle{} transition to move to \textquotesingle{}\mbox{\hyperlink{class_f_s_m_1_1_decide}{Decide}}\textquotesingle{} State
+
+define state \mbox{\hyperlink{class_f_s_m_1_1_recharging}{Recharging}} 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_f_s_m_1_1_recharging_ad7616d2d054fdb6cad503826fdbfba4b}\label{class_f_s_m_1_1_recharging_ad7616d2d054fdb6cad503826fdbfba4b}} 
+\index{FSM.Recharging@{FSM.Recharging}!\_\_init\_\_@{\_\_init\_\_}}
+\index{\_\_init\_\_@{\_\_init\_\_}!FSM.Recharging@{FSM.Recharging}}
+\doxysubsubsection{\texorpdfstring{\_\_init\_\_()}{\_\_init\_\_()}}
+{\footnotesize\ttfamily def F\+S\+M.\+Recharging.\+\_\+\+\_\+init\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{my\+\_\+helper }\end{DoxyParamCaption})}
+
+
+
+called on initialisation ... 
+
+\hypertarget{class_f_s_m_1_1_recharging_autotoc_md15}{}\doxysubsubsection{Parameters}\label{class_f_s_m_1_1_recharging_autotoc_md15}
+{\bfseries{helper}} \+: Helper
+
+an object of class Helper contained in \mbox{\hyperlink{helper_8py}{helper.\+py}} to use its functions
+
+{\bfseries{time}} \+: int
+
+counter to know time required for recharging
+
+{\bfseries{station\+\_\+reached}} \+: boolean
+
+flag to state if robot reached \mbox{\hyperlink{class_f_s_m_1_1_recharging}{Recharging}} station or not (1=yes 0=NO) 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_f_s_m_1_1_recharging_a4b1f2c3d76bab684e8b9f1c492610649}\label{class_f_s_m_1_1_recharging_a4b1f2c3d76bab684e8b9f1c492610649}} 
+\index{FSM.Recharging@{FSM.Recharging}!execute@{execute}}
+\index{execute@{execute}!FSM.Recharging@{FSM.Recharging}}
+\doxysubsubsection{\texorpdfstring{execute()}{execute()}}
+{\footnotesize\ttfamily def F\+S\+M.\+Recharging.\+execute (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{userdata }\end{DoxyParamCaption})}
+
+
+
+called on execution, moves to \mbox{\hyperlink{class_f_s_m_1_1_recharging}{Recharging}} Station calling helpers\textquotesingle{} function, then waits for the battery to be fully charged. 
+
+The wait is implemented through repetitive calls of the \textquotesingle{}low\+\_\+battery\textquotesingle{} transitions. When battery is charged, returns \textquotesingle{}recharged\textquotesingle{} transition to move to \textquotesingle{}\mbox{\hyperlink{class_f_s_m_1_1_decide}{Decide}}\textquotesingle{} State ... \hypertarget{class_f_s_m_1_1_recharging_autotoc_md16}{}\doxysubsubsection{Parameters}\label{class_f_s_m_1_1_recharging_autotoc_md16}
+{\bfseries{helper}} \+: Helper
+
+an object of class Helper contained in \mbox{\hyperlink{helper_8py}{helper.\+py}} to use its functions
+
+{\bfseries{time}} \+: int
+
+counter to know time required for recharging
+
+{\bfseries{station\+\_\+reached}} \+: boolean
+
+flag to state if robot reached \mbox{\hyperlink{class_f_s_m_1_1_recharging}{Recharging}} station or not (1=yes 0=NO) 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+scripts/\mbox{\hyperlink{_f_s_m_8py}{F\+S\+M.\+py}}\end{DoxyCompactItemize}

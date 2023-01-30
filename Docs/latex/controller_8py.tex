@@ -1,0 +1,52 @@
+\hypertarget{controller_8py}{}\doxysection{scripts/controller.py File Reference}
+\label{controller_8py}\index{scripts/controller.py@{scripts/controller.py}}
+
+
+Implement the Action server for controlling action.  
+
+
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classcontroller_1_1_controlling_action}{controller.\+Controlling\+Action}}
+\begin{DoxyCompactList}\small\item\em An action server to simulate motion controlling. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{controller_8py_a4fc1b6a99bc87906a47c7cad719ccb74}\label{controller_8py_a4fc1b6a99bc87906a47c7cad719ccb74}} 
+{\bfseries controller.\+L\+O\+G\+\_\+\+T\+AG} = anm.\+N\+O\+D\+E\+\_\+\+C\+O\+N\+T\+R\+O\+L\+L\+ER
+\item 
+\mbox{\Hypertarget{controller_8py_a99a847a8cdf1284e51872a5704e85411}\label{controller_8py_a99a847a8cdf1284e51872a5704e85411}} 
+{\bfseries controller.\+N\+O\+D\+E\+\_\+\+C\+O\+N\+T\+R\+O\+L\+L\+ER}
+\item 
+\mbox{\Hypertarget{controller_8py_a65f5ca619d887ed3eea896dd96035444}\label{controller_8py_a65f5ca619d887ed3eea896dd96035444}} 
+{\bfseries controller.\+log\+\_\+level}
+\item 
+\mbox{\Hypertarget{controller_8py_af7ece586506b0ed00fa2d33f4102566e}\label{controller_8py_af7ece586506b0ed00fa2d33f4102566e}} 
+{\bfseries controller.\+server} = Controlling\+Action()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Implement the Action server for controlling action. 
+
+\begin{DoxyAuthor}{Author}
+arch\+\_\+skeleton 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+0.\+1 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+20/11/2022
+\end{DoxyDate}
+Client for Action Service\+:
+
+/move\+\_\+base\+: to let the robot reach the given target
+
+Server for Action\+:
+
+/motion/controller \+: Action to control robot along the the path
+
+Description\+:
+
+Credits of this node to the arch\+\_\+skeleton repository \href{https://github.com/buoncubi/arch_skeleton.git}{\texttt{ https\+://github.\+com/buoncubi/arch\+\_\+skeleton.\+git}} which has been modified in order to adapt to this case. In particular i\textquotesingle{}ve added the client for /move\+\_\+base Action Service to actually move a real robot, two functions to call such Action sending the target or an empty goal to stop the robot, and as Done\+Callback definition for move\+\_\+base to allow canceling correctly the goal of move\+\_\+base in case \textquotesingle{}controller\textquotesingle{} receives a cancel request 
