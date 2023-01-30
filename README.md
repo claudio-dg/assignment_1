@@ -403,6 +403,7 @@ The second one instead is an helper class I made to simplify the interaction wit
 
 **Here follows the code explanation of the main functions of this class that have been modified/added** with respect to the first version of this project, please find a more detailed description of non-modified functions in the ```Readme.md``` of ```main``` branch or directly in [helper.py](https://github.com/claudio-dg/assignment_1/blob/second_assignment_changes/scripts/helper.py):
 
+----------------------
 #### MY_LoadOntology(self,room_name, x_value, y_value, doors_linked,connections,last_call)  : ####
 #### MODIFIED FOR ASSIGNMENT 2 ####
 This function has been heavily modified with respect to former implementation.
@@ -452,8 +453,6 @@ def MY_LoadOntology(self,room_name, x_value, y_value, doors_linked,connections,l
             client.utils.save_ref_with_inferences("/root/ros_ws/src/topological_map/MY_topological_map.owl")
 ```
 
-#### ChooseNextMove(self)  : ####
-Not modified
 
 
 #### PlanToNext(self, check_battery): ####
