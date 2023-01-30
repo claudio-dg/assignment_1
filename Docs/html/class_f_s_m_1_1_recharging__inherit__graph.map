@@ -1,0 +1,4 @@
+<map id="FSM.Recharging" name="FSM.Recharging">
+<area shape="rect" id="node1" title="State &#39;Recharging&#39; in which the robot moves to Recharging Station and waits for the battery to be ful..." alt="" coords="5,80,132,107"/>
+<area shape="rect" id="node2" title=" " alt="" coords="15,5,122,32"/>
+</map>
