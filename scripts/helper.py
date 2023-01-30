@@ -560,6 +560,10 @@ class Helper:
     #
     # determines if battery must be checked or not while planning
     #
+    # \param target_location : string -
+    #
+    # contains the name of target room to reach
+    #
     # \returns path_planned : PlanGoal():
     #
     # the determined waypoints of the plan to reach the goal
