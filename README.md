@@ -125,6 +125,9 @@ Last it presents a client for the ```armor_interface_srv``` service to interact 
 	
 Therefore this node manages the overall behaviour of the robot by implementing a ```Finite States Machine``` that is made of 4 different states (```LoadOntology```, ```Decide```, ```Surveillance```, ```Recharging```), that are reached through 5 different transitions (```'loaded'```,```'decided'```,```'visited'```,```'low_battery'```,```'recharged'```), as shown in the following graph obtained with ```smach_viewer```.
 
+#### MODIFIED FOR ASSIGNMENT 2 ####
+# **Added Features**: now this node also subscribes to ```/my_ID_topic``` to receive the marker id detected by robot's camera and put it into a global variable; it also implements the client for ```/room_info``` to be able to send request with the given ID and receive as response room informations.
+
 <p align="center">
 <img src="https://github.com/claudio-dg/assignment_1/blob/main/images/FSM.png?raw=true" width="400" />
 <p>
@@ -132,7 +135,7 @@ Therefore this node manages the overall behaviour of the robot by implementing a
 #### LoadOntology State: ####
 #### MODIFIED FOR ASSIGNMENT 2 ####
 	
-This is the ```Init state``` of the FSM, within which it waits for the map to be loaded, therefore it simply uploads the ontology of the map by calling  helper's function ```"MY_loadOntolgy"```, and then it returns the ```'loaded'``` transition in order to move to the successive state i.e. ```Decide```.
+This is the ```Init state``` of the FSM, within which it waits for the robot to pass through the detection of all markers. Once a new marker is detected it calls  ```/room_info``` service giving the detected ID as argument, then it puts the related room information received as response into some variables and passes them to the helper's function ```"MY_loadOntolgy"```, which will add the room to the ontology map. It repeats this step for each room (by calling  ```recharging ``` transition) until last room has been added to the ontology; then it returns the ```'loaded'``` transition in order to move to the successive state i.e. ```Decide```.
 
 ```bash
 class LoadOntology(smach.State):
@@ -145,13 +148,45 @@ class LoadOntology(smach.State):
                              outcomes=['loaded','decided','visited','low_battery','recharged'])
 
     def execute(self, userdata):
-        # function called when exiting from the node, it can be blocking
         print('+++++ Executing state LoadOntology +++++')
-        self._helper.MY_LoadOntology()
-        print('Loading Ontology...')
-        rospy.sleep(4)
-        return 'loaded'	
+
+        global received_id
+        global prec
+        rospy.loginfo("received_id= @[%i] ", received_id);
+        doors_list = []
+        connections_list = []
+
+        if(received_id != 0 and received_id != prec):
+            print("ho ricevuto un id marker,,--> %i ",received_id)
+            prec = received_id
+            # call /room_info service of 'marker_server' to receive info about the room associated with id given as input
+            response_info = id_client(received_id)
+            # put service response into variables
+            name = response_info.room
+            x = response_info.x
+            y = response_info.y
+
+            for item in response_info.connections:
+                doors_list.append(item.through_door)
+
+            for item in response_info.connections:
+                connections_list.append(item.connected_to)
+
+            if(received_id == 14):
+                last_call = 1
+            else:
+                last_call = 0
+            # call MY_LoadOntology to create the map
+            self._helper.MY_LoadOntology(name,x,y,doors_list,connections_list,last_call)
+
+        if(received_id == 14):
+            print("*** MAP COMPLETED *** passing to the next state ",received_id)
+            rospy.sleep(4)
+            return 'loaded'
+        rospy.sleep(2)
+        return 'recharged'	
 ```
+_Please note that the other classes of this node has not been further modified with respet to previous implementation, exception made for some change of variables name that do not have effect on the algorithms but are just more correlated with the new project._
 #### Decide State: ####
 
 In this state the robot chooses next move calling helper's function ```ChooseNextMove()``` and plans a path to reach such goal calling ```PlanToNext()```. It will put the results of these function calls into global variables shared among states, then returns ```'low_battery'``` transition if battery gets low during this phase (to move to ```Recharging``` state), otherwise returns ```'decided'``` transition to move to ```Surveillance``` state.
