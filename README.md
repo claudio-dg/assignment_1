@@ -116,8 +116,6 @@ This repository contains a ROS package called ```"assignment_1"``` that includes
 Here are shown the details of each software component implemented in this repository and contained in the ```scripts/``` folder.
 
 ### FSM node: ### 
-## MODIFIED FOR ASSIGNMENT 2 ##
-
 	
 This node is "indirectly" subscribed to ```/state/battery_low``` topic to receive continuous information about the battery state, in the sense that the subscriber is not directly initialised within the ```"FSM.py"```script, rather it is obtained through the functions defined in the ```helper.py``` that gets called in each class of this node.
 	
@@ -132,6 +130,7 @@ Therefore this node manages the overall behaviour of the robot by implementing a
 <p>
 
 #### LoadOntology State: ####
+#### MODIFIED FOR ASSIGNMENT 2 ####
 	
 This is the ```Init state``` of the FSM, within which it waits for the map to be loaded, therefore it simply uploads the ontology of the map by calling  helper's function ```"MY_loadOntolgy"```, and then it returns the ```'loaded'``` transition in order to move to the successive state i.e. ```Decide```.
 
