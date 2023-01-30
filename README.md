@@ -126,7 +126,7 @@ Last it presents a client for the ```armor_interface_srv``` service to interact 
 Therefore this node manages the overall behaviour of the robot by implementing a ```Finite States Machine``` that is made of 4 different states (```LoadOntology```, ```Decide```, ```Surveillance```, ```Recharging```), that are reached through 5 different transitions (```'loaded'```,```'decided'```,```'visited'```,```'low_battery'```,```'recharged'```), as shown in the following graph obtained with ```smach_viewer```.
 
 #### MODIFIED FOR ASSIGNMENT 2 ####
-# **Added Features**: now this node also subscribes to ```/my_ID_topic``` to receive the marker id detected by robot's camera and put it into a global variable; it also implements the client for ```/room_info``` to be able to send request with the given ID and receive as response room informations.
+**Added Features**: now this node also subscribes to ```/my_ID_topic``` to receive the marker id detected by robot's camera and put it into a global variable; it also implements the client for ```/room_info``` to be able to send request with the given ID and receive as response room informations.
 
 <p align="center">
 <img src="https://github.com/claudio-dg/assignment_1/blob/main/images/FSM.png?raw=true" width="400" />
@@ -135,7 +135,7 @@ Therefore this node manages the overall behaviour of the robot by implementing a
 #### LoadOntology State: ####
 #### MODIFIED FOR ASSIGNMENT 2 ####
 	
-This is the ```Init state``` of the FSM, within which it waits for the robot to pass through the detection of all markers. Once a new marker is detected it calls  ```/room_info``` service giving the detected ID as argument, then it puts the related room information received as response into some variables and passes them to the helper's function ```"MY_loadOntolgy"```, which will add the room to the ontology map. It repeats this step for each room (by calling  ```recharging ``` transition) until last room has been added to the ontology; then it returns the ```'loaded'``` transition in order to move to the successive state i.e. ```Decide```.
+This is the ```Init state``` of the FSM, within which it waits for the robot to pass through the detection of all markers. Once a new marker is detected it calls  ```/room_info``` service giving the detected ID as argument, then it puts the related room information received as response into some variables and passes them to the helper's function ```"MY_loadOntolgy"```, which will add the room to the ontology map. It repeats this step for each room (cycling the state by calling  ```recharging ``` transition) until last room has been added to the ontology; then it returns the ```'loaded'``` transition in order to move to the successive state i.e. ```Decide```.
 
 ```bash
 class LoadOntology(smach.State):
@@ -186,7 +186,7 @@ class LoadOntology(smach.State):
         rospy.sleep(2)
         return 'recharged'	
 ```
-_Please note that the other classes of this node has not been further modified with respet to previous implementation, exception made for some change of variables name that do not have effect on the algorithms but are just more correlated with the new project._
+_Please note that the other classes of this node has not been further modified with respect to previous implementation, exception made for some change of variables name that do not have effect on the algorithms but are just more correlated with the new project._
 #### Decide State: ####
 
 In this state the robot chooses next move calling helper's function ```ChooseNextMove()``` and plans a path to reach such goal calling ```PlanToNext()```. It will put the results of these function calls into global variables shared among states, then returns ```'low_battery'``` transition if battery gets low during this phase (to move to ```Recharging``` state), otherwise returns ```'decided'``` transition to move to ```Surveillance``` state.
