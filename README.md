@@ -91,24 +91,24 @@ The project is based on the ROS scheme that is shown in the following ```rqt_gra
  
 This repository contains a ROS package called ```"assignment_1"``` that includes the following resources:
 
-- [CMakeList.txt](https://github.com/claudio-dg/assignment_1/blob/main/CMakeLists.txt): File to configure this package.
-- [package.xml](https://github.com/claudio-dg/assignment_1/blob/main/package.xml): File to configure this package.
-- [Docs/](https://github.com/claudio-dg/assignment_1/tree/main/Docs): folder containing ```Doxygen documentation``` of the package
-- [images/](https://github.com/claudio-dg/assignment_1/tree/main/images): folder containing images and graphs used within this [README](https://github.com/claudio-dg/assignment_1/blob/main/README.md).
-- [scripts/](https://github.com/claudio-dg/assignment_1/tree/main/scripts): It contains the implementation of each software components produced for this project.
+- [CMakeList.txt](https://github.com/claudio-dg/assignment_1/blob/second_assignment_changes/CMakeLists.txt): File to configure this package.
+- package.xml: File to configure this package.
+- Docs/: folder containing ```Doxygen documentation``` of the package
+- images/: folder containing images and graphs used within this [README](https://github.com/claudio-dg/assignment_1/blob/main/README.md).
+- scripts: It contains the implementation of each software components produced for this project.
 	
-	* [FSM.py](https://github.com/claudio-dg/assignment_1/blob/main/scripts/FSM.py): contains the implementation of the SMACH Finite States Machine
+	* FSM.py: contains the implementation of the SMACH Finite States Machine
 	
-	* [controller.py](https://github.com/claudio-dg/assignment_1/blob/main/scripts/controller.py): It is a dummy implementation of a motion controller. (Credits to [arch_skeleton](https://github.com/buoncubi/arch_skeleton))
+	* controller.py: It is a dummy implementation of a motion controller. (Credits to [arch_skeleton](https://github.com/buoncubi/arch_skeleton))
 	
-	* [helper.py](https://github.com/claudio-dg/assignment_1/blob/main/scripts/helper.py): It contains the implementation of two helper classes for ROS actions and for interfacing the Ontology through aRMOR_api
+	* helper.py: It contains the implementation of two helper classes for ROS actions and for interfacing the Ontology through aRMOR_api
 	
-	* [planner.py](https://github.com/claudio-dg/assignment_1/blob/main/scripts/planner.py): It is a dummy implementation of a motion planner. (Credits to [arch_skeleton](https://github.com/buoncubi/arch_skeleton))
+	* planner.py: It is a dummy implementation of a motion planner. (Credits to [arch_skeleton](https://github.com/buoncubi/arch_skeleton))
 	
-	* [robot_state.py](https://github.com/claudio-dg/assignment_1/blob/main/scripts/robot_state.py): It implements the robot state including: current position, and battery level.
-- [launch/](https://github.com/claudio-dg/assignment_1/tree/main/launch): It contains the launch file to start the simulation
+	* robot_state.py: It implements the robot state including: current position, and battery level.
+- launch/: It contains the launch file to start the simulation
 	
-	* [start_simulation.launch](https://github.com/claudio-dg/assignment_1/blob/main/launch/start_simulation.launch): launch file of the project
+	* start_simulation.launch: launch file of the project
 	
  
 ## Software Components and code description
