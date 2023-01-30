@@ -115,7 +115,7 @@ This repository contains a ROS package called ```"assignment_1"``` that includes
 	
 Here are shown the details of each software component implemented in this repository and contained in the ```scripts/``` folder.
 
-### FSM node: ###
+### FSM node: ### ## MODIFIED FOR ASSIGNMENT 2##
 
 	
 This node is "indirectly" subscribed to ```/state/battery_low``` topic to receive continuous information about the battery state, in the sense that the subscriber is not directly initialised within the ```"FSM.py"```script, rather it is obtained through the functions defined in the ```helper.py``` that gets called in each class of this node.
