@@ -15,7 +15,6 @@ Table of contents
 * [Project structure](#project-structure)
 * [Software Components and code description](#software-components-and-code-description)
 * [Behaviuor Presentation](#behaviuor-presentation)
-* [Limitations and Possible Improvements](#limitations-and-possible-improvements)
 
 
 ## Introduction
@@ -635,27 +634,6 @@ This node has been taken from [arch_skeleton](https://github.com/buoncubi/arch_s
 
 ## Behaviuor Presentation
  
-Here below you can find a short video (about 1 min), showing the actual workflow of this project, along with a brief text explanation of what is shown in order to fully understand what happens:
-
-<p align="center">
-<img src="https://github.com/claudio-dg/assignment_1/blob/main/images/example.gif?raw=true" width="800px" align="center">
-<p>
- 
-* First the **LoadOntology** State is executed loading the ontology and showing some prints.
-* Then the FSM moves into **Decide** State, in which it prints useful info such as which are the currently reachable rooms or the urgent ones, the robot picks one of them (using the algorithms previously mentioned) and plans a path of a randome number of waypoints.
-* **Surveillance** state is then executed: the robot simulates the motion time and after some seconds, actually moves to the selected location, since it is a corridor it will not survey but will pass immediately to **Decide** state again.
-* previous steps is repeated until reaching a urgent ROOM (R3) in which the robot then stays for 4 second before going back to **Decide** state.
-* the loop goes on until at a certain point (during "motion simulation" in the specific case of this video) robot gets low battery. At this point it interrupts the Surveillance state to move to the **Recharging** one.
-* Robot therefore moves back until reaching recharging station (i.e 'E' location), where it waits for the battery to be fully charged by calling **Recharging** state multiple times
-* When the battery gets finally high, the robot starts back its behaviour entering in the **Decide** state.
- ## Limitations and Possible Improvements
- 
-The main limitations of this project are related to the current implementation of ```Planning``` and ```Controlling``` algorithms. Here in fact, the code written in  [planner.py](https://github.com/claudio-dg/assignment_1/blob/main/scripts/planner.py) and in [controller.py](https://github.com/claudio-dg/assignment_1/blob/main/scripts/controller.py), only allow to ```simulate``` these actions, without actually thinking about how to reach a real room in the environment, but instead simulating the time waste of this planning action along with the one required for actually moving along the planned path. 
-	
-Therefore **possible improvements** could involve the implementation of a better algorithm that actually takes into account a real environment in order to plan some real waypoints to reach a real position, while regarding the controller node, a better algorithm could take information from a real robot to actually control it along the planned path.
-	
-In addition to this the implementation of the ```robot battery``` could be further improved, since for now it is just represented by a boolean value changing randomly its value after some predefined time, so a better algoritmh could be used to discharge the robot accordingly with the ```travelled distance``` for instance, which would also avoid the robot to reach locations that are too far from its recharging station, that would prevent him to go back and recharge its battery. Moreover another limition about it is that, if we use this particular robot simulaton within a wider map, it could happen that robot may actually receive the "recharged" battery state before actually reaching the Recharging station, therefore the algorithm based on "travelled distance" previously named could help also in this case. 
-
-In the end, one last limitation is related to the "Urgency threshold" of the rooms, which causes them to become urgent after 7 second from their last visit: this collides with the Surveillance pattern implementation since, in the specific environment of this assignment, it causes the robot to remain "stucked" in a certain side of the map. In fact it will keep looping among the left side (R1-C1-R2) or the right one (R3-C2-R4), beacuse after having visited all the rooms of one side, the one that has been visited as first becomes urgent again requiring the robot to move there. therefore robot will change "side of the map" only after having returned to 'E ' location for recharging: here it randomly chooses one of the two corridors in which, by fact, it will remain until the next ```low battery``` occurrence. This could be simply avoided by increasing the threshold of the rooms or by changing the "planning" algorithm, in order to avoid visiting the same rooms multiple times in a row.
+For the Demo of the firs assignment please give a look to  the Readme.md of [assignment_1](https://github.com/claudio-dg/assignment_1/blob/main/README.md) (main branch), while for the final Demo of the whole project see [Readme.md](https://github.com/claudio-dg/assignment2/blob/main/README.md) of assignment2.
  
 
