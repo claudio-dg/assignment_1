@@ -12,12 +12,17 @@
 #
 #
 # Publishes to: <BR>
+# 
 # /state/battery_low : to publish battery state
 #
+# Subscribes to: <BR>
+# 
+# /odom : to get Robot position
+# 
 # Server for Service:
 #
 # /state/get_pose : to allow retrieving robot position
-# /state/set_pose : to allow modifying robot position
+# /state/set_pose : to allow modifying robot position -- No more in the updated version
 #
 # Description:
 #
