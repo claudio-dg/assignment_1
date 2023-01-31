@@ -21,9 +21,9 @@
 # 
 # Server for Service:
 #
-# /state/get_pose : to allow retrieving robot position
-# /state/set_pose : to allow modifying robot position -- No more in the updated version
-#
+# /state/get_pose : to allow retrieving robot position -- No more in the updated version
+# /state/set_pose : to allow modifying robot position 
+# 
 # Description:
 #
 # This node contains the implementation of RobotState class, which defines two Service servers for
