@@ -625,7 +625,9 @@ def GoToRechargingStation(self):
 
 ----------------------
 ### Robot-State node  : ### 
-This node has been taken from [arch_skeleton](https://github.com/buoncubi/arch_skeleton) repository, slightly adapting to the needs of my project, and implements two ```services``` (i.e., ```state/set_pose``` and ```state/get_pose```) and a ```publisher``` (i.e., ```state/battery_low```) that runs on a separate thread. Here the modifications are mainly represented by some parameters changes related to the battery state, for which i set two different "timers" to set "charging/discharging" time, along with the elimination of some redundant part for my project. Therefore the structure of the node is pretty much inviariated, for this reason please consult [arch_skeleton](https://github.com/buoncubi/arch_skeleton) repository for further documentation.
+#### MODIFIED FOR ASSIGNMENT 2 ####
+This node has been taken from [arch_skeleton](https://github.com/buoncubi/arch_skeleton) repository, slightly adapting to the needs of my project, and implements one ```service``` (i.e., ```state/set_pose```) and a ```publisher``` (i.e., ```state/battery_low```) that runs on a separate thread. Here the modifications are mainly represented by some parameters changes related to the battery state, for which i set two different "timers" to set "charging/discharging" time, along with the elimination of some redundant part for my project. Therefore the structure of the node is pretty much inviariated, for this reason please consult [arch_skeleton](https://github.com/buoncubi/arch_skeleton) repository for further documentation.
+**Modified Feature**: in the new version, this node does not present the server for ```state/get_pose```, but instead implements a subscriber to ```/odom``` in order to update the current robot position with the real one taken by the odometry. The remaining functions are invariated, please look at [robobt_state.py](https://github.com/claudio-dg/assignment_1/blob/second_assignment_changes/scripts/robot_state.py) for further details.
 
 
 
@@ -634,6 +636,6 @@ This node has been taken from [arch_skeleton](https://github.com/buoncubi/arch_s
 
 ## Behaviuor Presentation
  
-For the Demo of the firs assignment please give a look to  the Readme.md of [assignment_1](https://github.com/claudio-dg/assignment_1/blob/main/README.md) (main branch), while for the final Demo of the whole project see [Readme.md](https://github.com/claudio-dg/assignment2/blob/main/README.md) of assignment2.
+For the Demo of the firs assignment please give a look to  the Readme.md of [assignment_1](https://github.com/claudio-dg/assignment_1/blob/main/README.md) (main branch), while for the final Demo of the whole project see Readme.md of [assignment2](https://github.com/claudio-dg/assignment2/blob/main/README.md).
  
 
